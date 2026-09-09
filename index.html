@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxit Collection</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f4f6f8;
+    }
+
+    .login-box {
+      width: 90%;
+      max-width: 400px;
+      background: white;
+      padding: 30px 25px;
+      border-radius: 18px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: right;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #message {
+      margin-top: 15px;
+      color: #d00;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <h1>BOXIT</h1>
+    <div class="subtitle">سامانه جمع‌آوری آموزشگاه‌ها</div>
+
+    <input
+      type="text"
+      id="username"
+      placeholder="نام کاربری"
+      autocomplete="username"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="رمز عبور"
+      autocomplete="current-password"
+    >
+
+    <button onclick="login()">ورود</button>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (username === "admin" && password === "123456") {
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById("message").innerText =
+          "نام کاربری یا رمز عبور اشتباه است.";
+      }
+    }
+  </script>
+
+</body>
+</html>
