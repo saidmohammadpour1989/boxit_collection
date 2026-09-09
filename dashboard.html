@@ -3,1641 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOXIT | مدیریت جمع‌آوری آموزشگاه‌ها</title>
+<title>سامانه مدیریت جمع‌آوری باکسیت</title>
 
 <style>
-:root{
-    --boxit:#7b1735;
-    --boxit-dark:#5b1027;
-    --boxit-light:#f7e9ee;
-    --green:#198754;
-    --orange:#e39a17;
-    --red:#c62828;
-    --gray:#f4f5f7;
-    --text:#292929;
-}
-
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    background:var(--gray);
-    color:var(--text);
+*{
+    box-sizing:border-box;
     font-family:Tahoma,Arial,sans-serif;
 }
 
-header{
-    background:linear-gradient(135deg,var(--boxit-dark),var(--boxit));
-    color:white;
-    padding:18px;
-    box-shadow:0 3px 12px #0002;
+body{
+    margin:0;
+    background:#f5f5f5;
+    color:#333;
 }
 
 .header{
-    max-width:1150px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    background:#7b1538;
+    color:white;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 2px 8px #aaa;
 }
 
-.logo{
-    font-size:28px;
-    font-weight:bold;
+.header h1{
+    margin:0;
+    font-size:22px;
 }
 
-.subtitle{
-    font-size:12px;
-    margin-top:5px;
-    opacity:.85;
+.header p{
+    margin:8px 0 0;
+    font-size:13px;
 }
 
 .container{
-    width:94%;
-    max-width:1150px;
-    margin:20px auto;
-}
-
-.tabs{
-    display:flex;
-    gap:8px;
-    margin-bottom:18px;
-    overflow:auto;
-}
-
-.tabs button{
-    border:1px solid #ddd;
-    background:white;
-    color:var(--boxit);
-    padding:12px 18px;
-    border-radius:10px;
-    white-space:nowrap;
-    cursor:pointer;
-}
-
-.tabs button.active{
-    background:var(--boxit);
-    color:white;
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
 }
 
 .card{
     background:white;
-    border-radius:15px;
-    padding:20px;
+    border-radius:12px;
+    padding:18px;
     margin-bottom:18px;
-    box-shadow:0 3px 14px #0000000d;
+    box-shadow:0 2px 8px #ddd;
 }
 
-.card h2,
-.card h3{
-    color:var(--boxit);
+.card h2{
+    color:#7b1538;
     margin-top:0;
 }
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
     gap:12px;
-    margin-bottom:18px;
 }
 
 .stat{
-    background:white;
-    padding:18px;
-    border-radius:14px;
-    text-align:center;
-    border-top:4px solid var(--boxit);
-    box-shadow:0 3px 12px #0000000d;
+    background:#fafafa;
+    border-right:5px solid #7b1538;
+    padding:15px;
+    border-radius:8px;
 }
 
 .stat strong{
     display:block;
-    font-size:28px;
-    color:var(--boxit);
-    margin-top:8px;
+    font-size:25px;
+    color:#7b1538;
+    margin-top:5px;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.school{
-    border:1px solid #e5e5e5;
-    border-radius:13px;
-    padding:16px;
-    margin-bottom:12px;
-}
-
-.school-title{
-    color:var(--boxit);
-    font-size:18px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.row{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    padding:7px 0;
-    border-bottom:1px solid #f0f0f0;
-}
-
-.row:last-child{
-    border-bottom:none;
-}
-
-.badge{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:12px;
-}
-
-.ready{background:#fff1ce;color:#765200}
-.done{background:#dff4e7;color:#12683b}
-.wait{background:#eee;color:#555}
-.danger{background:#fde0e0;color:#a00000}
-
-input,select{
+table{
     width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:9px;
-    margin:6px 0 10px;
-    font-size:15px;
-}
-
-button.action{
-    width:100%;
-    border:0;
-    border-radius:9px;
-    padding:12px;
-    margin-top:7px;
-    background:var(--boxit);
-    color:white;
-    font-size:14px;
-    cursor:pointer;
-}
-
-button.green{background:var(--green)}
-button.orange{background:var(--orange)}
-button.gray{background:#666}
-button.red{background:var(--red)}
-
-.notice{
-    padding:13px;
-    border-radius:10px;
-    margin:10px 0;
-    line-height:1.9;
-}
-
-.notice.green{
-    background:#e2f4e8;
-    color:#16643a;
-}
-
-.notice.orange{
-    background:#fff3d2;
-    color:#755300;
-}
-
-.notice.red{
-    background:#fde3e3;
-    color:#9d0000;
+    border-collapse:collapse;
+    min-width:850px;
 }
 
 .table-wrap{
     overflow-x:auto;
 }
 
-table{
-    width:100%;
-    min-width:900px;
-    border-collapse:collapse;
+th,td{
+    border-bottom:1px solid #ddd;
+    padding:11px 8px;
+    text-align:center;
+    font-size:13px;
 }
 
 th{
-    background:var(--boxit);
+    background:#7b1538;
     color:white;
-    padding:12px;
 }
 
-td{
+tr:hover{
+    background:#fafafa;
+}
+
+.btn{
+    border:none;
+    border-radius:7px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-size:13px;
+    margin:3px;
+}
+
+.btn-primary{
+    background:#7b1538;
+    color:white;
+}
+
+.btn-secondary{
+    background:#eee;
+    color:#333;
+}
+
+.btn-success{
+    background:#2e7d32;
+    color:white;
+}
+
+.btn-warning{
+    background:#f0a000;
+    color:white;
+}
+
+.btn-danger{
+    background:#b3261e;
+    color:white;
+}
+
+input,select{
+    width:100%;
     padding:11px;
-    text-align:center;
-    border-bottom:1px solid #eee;
+    border:1px solid #ccc;
+    border-radius:7px;
+    margin:6px 0 12px;
+    background:white;
 }
 
-td input{
-    width:85px;
-    margin:0;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
 }
 
-.small{
-    font-size:12px;
-    color:#777;
+.school-card{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:12px;
+    background:#fff;
 }
 
-.hidden{
-    display:none!important;
+.school-card h3{
+    color:#7b1538;
+    margin-top:0;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:15px;
+    font-size:11px;
+    margin:2px;
+}
+
+.badge-green{
+    background:#d9f2dc;
+    color:#17651c;
+}
+
+.badge-red{
+    background:#fde0df;
+    color:#9b1c16;
+}
+
+.badge-orange{
+    background:#fff0c9;
+    color:#805900;
+}
+
+.info{
+    background:#f8eef2;
+    border-right:4px solid #7b1538;
+    padding:12px;
+    border-radius:6px;
+    margin:10px 0;
+}
+
+.success-box{
+    background:#e8f5e9;
+    border-right:4px solid #2e7d32;
+    padding:12px;
+    border-radius:6px;
+    margin:10px 0;
 }
 
 .modal{
+    display:none;
     position:fixed;
     inset:0;
-    background:#0009;
-    display:none;
+    background:rgba(0,0,0,.55);
+    z-index:1000;
     align-items:center;
     justify-content:center;
-    padding:18px;
-    z-index:99;
+    padding:20px;
 }
 
-.modal-box{
+.modal-content{
     background:white;
+    border-radius:12px;
+    padding:20px;
     width:100%;
-    max-width:550px;
+    max-width:600px;
     max-height:90vh;
     overflow:auto;
-    border-radius:16px;
-    padding:20px;
 }
 
 .close{
     float:left;
-    border:0;
-    background:#eee;
+    font-size:25px;
+    cursor:pointer;
+    color:#777;
+}
+
+.logout{
+    position:absolute;
+    left:15px;
+    top:15px;
+    background:white;
+    color:#7b1538;
+    border:none;
+    border-radius:7px;
     padding:8px 12px;
-    border-radius:8px;
+    cursor:pointer;
 }
 
-@media(max-width:750px){
-    .stats{grid-template-columns:repeat(2,1fr)}
-    .grid{grid-template-columns:1fr}
-    .header{flex-direction:column;text-align:center;gap:10px}
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<div class="header">
-    <div>
-        <div class="logo">BOXIT</div>
-        <div class="subtitle">سامانه مدیریت و جمع‌آوری آموزشگاه‌ها</div>
-    </div>
-
-    <div>
-        کاربر: <strong id="currentUser">---</strong>
-        <br>
-        <span class="small" style="color:white">نسخه نمایشی</span>
-    </div>
-</div>
-</header>
-
-
-<div class="container">
-
-<div class="tabs">
-
-<button id="tabManager" onclick="showPanel('manager')">
-👨‍💼 مدیریت
-</button>
-
-<button id="tabCollector" onclick="showPanel('collector')">
-🚚 جمع‌آوری
-</button>
-
-<button id="tabSchool" onclick="showPanel('school')">
-🏫 آموزشگاه
-</button>
-
-</div>
-
-
-<!-- ==================== MANAGEMENT ==================== -->
-
-<section id="managerPanel">
-
-<div class="stats">
-
-<div class="stat">
-کل آموزشگاه‌ها
-<strong id="totalSchools">200</strong>
-</div>
-
-<div class="stat">
-آماده جمع‌آوری
-<strong id="readySchools">0</strong>
-</div>
-
-<div class="stat">
-جمع‌آوری‌شده
-<strong id="collectedSchools">0</strong>
-</div>
-
-<div class="stat">
-کل پرونده‌های اعلامی
-<strong id="totalFiles">0</strong>
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>📊 گزارش عملیات روزانه</h2>
-
-<p class="small">
-مدیریت می‌تواند وضعیت هر آموزشگاه را به‌صورت جداگانه مشاهده کند.
-</p>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-<th>آموزشگاه</th>
-<th>پرونده اعلامی</th>
-<th>پرونده دریافتی</th>
-<th>ساعت مراجعه</th>
-<th>قبض ارسالی</th>
-<th>قبض تحویل</th>
-<th>وضعیت</th>
-<th>جزئیات</th>
-</tr>
-
-</thead>
-
-<tbody id="managerTable"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🧾 ثبت تعداد قبض ارسالی</h2>
-
-<p>
-تعداد قبضی که برای هر آموزشگاه ارسال می‌شود را مدیریت مشخص می‌کند.
-</p>
-
-<select id="managerSchoolSelect"></select>
-
-<input
-type="number"
-id="managerReceiptCount"
-min="0"
-placeholder="تعداد قبض"
-/>
-
-<button class="action" onclick="managerSetReceipts()">
-ثبت تعداد قبض ارسالی
-</button>
-
-<div id="managerReceiptResult"></div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🔄 مدیریت اطلاعات نمایشی</h2>
-
-<button class="action red" onclick="resetDemo()">
-بازنشانی اطلاعات دمو
-</button>
-
-</div>
-
-</section>
-
-
-
-<!-- ==================== COLLECTOR ==================== -->
-
-<section id="collectorPanel" class="hidden">
-
-<div class="stats">
-
-<div class="stat">
-ماموریت امروز
-<strong id="collectorMissions">0</strong>
-</div>
-
-<div class="stat">
-انجام‌شده
-<strong id="collectorDone">0</strong>
-</div>
-
-<div class="stat">
-باقی‌مانده
-<strong id="collectorRemaining">0</strong>
-</div>
-
-<div class="stat">
-پرونده دریافتی
-<strong id="collectorFiles">0</strong>
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🚚 مأموریت‌های امروز</h2>
-
-<div id="collectorList"></div>
-
-</div>
-
-</section>
-
-
-
-<!-- ==================== SCHOOL ==================== -->
-
-<section id="schoolPanel" class="hidden">
-
-<div class="card">
-
-<h2>🏫 پنل آموزشگاه</h2>
-
-<label>آموزشگاه موردنظر</label>
-
-<select id="schoolSelect" onchange="renderSchoolPanel()"></select>
-
-</div>
-
-
-<div id="schoolContent"></div>
-
-</section>
-
-</div>
-
-
-
-<!-- ==================== MODAL ==================== -->
-
-<div class="modal" id="detailModal">
-
-<div class="modal-box">
-
-<button class="close" onclick="closeModal()">✕</button>
-
-<h2>جزئیات آموزشگاه</h2>
-
-<div id="detailContent"></div>
-
-</div>
-
-</div>
-
-
-
-<script>
-
-/* =====================================================
-   DATA
-===================================================== */
-
-const STORAGE_KEY = "boxit_demo_v3";
-
-
-const defaultData = {
-
-schools: [
-
-{
-id:"culture",
-name:"آموزشگاه فرهنگ",
-address:"خیابان نمونه، پلاک ۱۲",
-declaredFiles:45,
-receivedFiles:43,
-ready:true,
-arrivalTime:"",
-collected:false,
-eta:35,
-receiptRequested:20,
-receiptSent:20,
-receiptDelivered:false
-},
-
-{
-id:"danesh",
-name:"آموزشگاه دانش",
-address:"میدان اصلی، خیابان دوم",
-declaredFiles:32,
-receivedFiles:32,
-ready:true,
-arrivalTime:"11:15",
-collected:true,
-eta:15,
-receiptRequested:0,
-receiptSent:0,
-receiptDelivered:false
-},
-
-{
-id:"ayandeh",
-name:"آموزشگاه آینده",
-address:"بلوار آزادی، کوچه سوم",
-declaredFiles:50,
-receivedFiles:0,
-ready:true,
-arrivalTime:"",
-collected:false,
-eta:45,
-receiptRequested:30,
-receiptSent:0,
-receiptDelivered:false
-},
-
-{
-id:"omid",
-name:"آموزشگاه امید",
-address:"خیابان فرهنگ، پلاک ۲۵",
-declaredFiles:38,
-receivedFiles:35,
-ready:true,
-arrivalTime:"12:05",
-collected:false,
-eta:20,
-receiptRequested:15,
-receiptSent:15,
-receiptDelivered:false
-},
-
-{
-id:"payam",
-name:"آموزشگاه پیام",
-address:"خیابان امام، پلاک ۴۱",
-declaredFiles:27,
-receivedFiles:0,
-ready:false,
-arrivalTime:"",
-collected:false,
-eta:60,
-receiptRequested:0,
-receiptSent:0,
-receiptDelivered:false
-}
-
-]
-
-};
-
-
-/* =====================================================
-   LOAD DATA
-===================================================== */
-
-function loadData(){
-
-let saved = localStorage.getItem(STORAGE_KEY);
-
-if(saved){
-
-try{
-return JSON.parse(saved);
-}catch(e){}
-
-}
-
-let fresh = JSON.parse(JSON.stringify(defaultData));
-
-localStorage.setItem(STORAGE_KEY,JSON.stringify(fresh));
-
-return fresh;
-}
-
-
-let data = loadData();
-
-
-function saveData(){
-
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(data)
-);
-
-renderAll();
-
-}
-
-
-/* =====================================================
-   USER
-===================================================== */
-
-let currentUser = localStorage.getItem("boxitUser") || "admin";
-
-document.getElementById("currentUser").innerText =
-currentUser;
-
-
-/* =====================================================
-   PANEL
-===================================================== */
-
-function showPanel(panel){
-
-document.getElementById("managerPanel").classList.add("hidden");
-document.getElementById("collectorPanel").classList.add("hidden");
-document.getElementById("schoolPanel").classList.add("hidden");
-
-document.getElementById("tabManager").classList.remove("active");
-document.getElementById("tabCollector").classList.remove("active");
-document.getElementById("tabSchool").classList.remove("active");
-
-
-if(panel==="manager"){
-
-document.getElementById("managerPanel").classList.remove("hidden");
-document.getElementById("tabManager").classList.add("active");
-
-}
-
-if(panel==="collector"){
-
-document.getElementById("collectorPanel").classList.remove("hidden");
-document.getElementById("tabCollector").classList.add("active");
-
-}
-
-if(panel==="school"){
-
-document.getElementById("schoolPanel").classList.remove("hidden");
-document.getElementById("tabSchool").classList.add("active");
-
-}
-
-renderAll();
-
-}
-
-
-/* =====================================================
-   MANAGER
-===================================================== */
-
-function renderManager(){
-
-let ready =
-data.schools.filter(s=>s.ready).length;
-
-let collected =
-data.schools.filter(s=>s.collected).length;
-
-let files =
-data.schools.reduce(
-(sum,s)=>sum+Number(s.declaredFiles||0),0
-);
-
-document.getElementById("readySchools").innerText=ready;
-document.getElementById("collectedSchools").innerText=collected;
-document.getElementById("totalFiles").innerText=files;
-
-
-let table="";
-
-data.schools.forEach(s=>{
-
-let status;
-
-if(s.collected){
-status='<span class="badge done">جمع‌آوری شد</span>';
-}
-else if(s.ready){
-status='<span class="badge ready">آماده جمع‌آوری</span>';
-}
-else{
-status='<span class="badge wait">منتظر اعلام</span>';
-}
-
-
-let difference =
-Number(s.declaredFiles||0) -
-Number(s.receivedFiles||0);
-
-
-table+=`
-
-<tr>
-
-<td><strong>${s.name}</strong></td>
-
-<td>${s.declaredFiles}</td>
-
-<td>
-${s.collected ? s.receivedFiles : "—"}
-
-${difference>0 ?
-`<br><span class="small">
-مغایرت: ${difference}
-</span>` : ""}
-
-</td>
-
-<td>
-${s.arrivalTime || "—"}
-</td>
-
-<td>
-
-<input
-type="number"
-min="0"
-value="${s.receiptSent}"
-id="receipt_${s.id}"
->
-
-</td>
-
-<td>
-
-${s.receiptDelivered ?
-'<span class="badge done">تحویل شد</span>' :
-(s.receiptSent>0 ?
-'<span class="badge ready">در انتظار</span>' :
-'—')}
-
-</td>
-
-<td>${status}</td>
-
-<td>
-
-<button
-class="action"
-onclick="showDetails('${s.id}')"
->
-مشاهده
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-document.getElementById("managerTable").innerHTML=table;
-
-
-/* school selector */
-
-let select =
-document.getElementById("managerSchoolSelect");
-
-select.innerHTML="";
-
-data.schools.forEach(s=>{
-
-select.innerHTML+=
-`<option value="${s.id}">
-${s.name}
-</option>`;
-
-});
-
-}
-
-
-/* =====================================================
-   MANAGER RECEIPTS
-===================================================== */
-
-function managerSetReceipts(){
-
-let id =
-document.getElementById("managerSchoolSelect").value;
-
-let count =
-Number(document.getElementById("managerReceiptCount").value);
-
-
-if(count<0){
-
-alert("تعداد صحیح وارد کنید.");
-return;
-
-}
-
-let school =
-data.schools.find(s=>s.id===id);
-
-school.receiptSent=count;
-
-document.getElementById("managerReceiptResult").innerHTML=
-
-`<div class="notice green">
-تعداد <strong>${count}</strong> قبض برای
-<strong>${school.name}</strong>
-ثبت شد.
-</div>`;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   COLLECTOR
-===================================================== */
-
-function renderCollector(){
-
-let missions =
-data.schools.filter(s=>s.ready);
-
-let done =
-missions.filter(s=>s.collected).length;
-
-let remaining =
-missions.length-done;
-
-let files =
-missions.reduce(
-(sum,s)=>sum+Number(s.receivedFiles||0),0
-);
-
-
-document.getElementById("collectorMissions").innerText=
-missions.length;
-
-document.getElementById("collectorDone").innerText=
-done;
-
-document.getElementById("collectorRemaining").innerText=
-remaining;
-
-document.getElementById("collectorFiles").innerText=
-files;
-
-
-let html="";
-
-
-missions.forEach(s=>{
-
-let arrivalText =
-s.arrivalTime
-? `<div class="notice green">
-📍 زمان دقیق مراجعه:
-<strong>${s.arrivalTime}</strong>
-</div>`
-: `<div class="notice orange">
-🚚 زمان تقریبی رسیدن:
-<strong>${s.eta} دقیقه دیگر</strong>
-</div>`;
-
-
-let receiptSection="";
-
-if(s.receiptSent>0){
-
-receiptSection=`
-
-<hr>
-
-<h3>🧾 قبض پستی</h3>
-
-<p>
-تعداد قبض ارسالی:
-<strong>${s.receiptSent}</strong>
-</p>
-
-${
-s.receiptDelivered
-
-?
-`<div class="notice green">
-✅ قبض تحویل داده شده است.
-</div>`
-
-:
-
-`<button
-class="action gray"
-onclick="receiptDelivered('${s.id}')"
->
-🧾 قبض تحویل شد
-</button>`
-}
-
-`;
-
-}
-
-
-html+=`
-
-<div class="school">
-
-<div class="school-title">
-${s.name}
-</div>
-
-<div class="row">
-<span>آدرس</span>
-<strong>${s.address}</strong>
-</div>
-
-<div class="row">
-<span>تعداد اعلامی</span>
-<strong>${s.declaredFiles}</strong>
-</div>
-
-<div class="row">
-<span>تعداد دریافتی فعلی</span>
-<strong>${s.receivedFiles}</strong>
-</div>
-
-${arrivalText}
-
-
-${
-!s.arrivalTime
-
-?
-
-`<button
-class="action"
-onclick="registerArrival('${s.id}')"
->
-📍 ثبت رسیدن به آموزشگاه
-</button>`
-
-: ""
-
-}
-
-
-<h3>📦 ثبت تعداد واقعی پرونده</h3>
-
-<input
-type="number"
-min="0"
-id="files_${s.id}"
-value="${s.receivedFiles}"
->
-
-<button
-class="action orange"
-onclick="updateReceivedFiles('${s.id}')"
->
-✏️ اصلاح / ثبت تعداد دریافتی
-</button>
-
-
-${
-!s.collected
-
-?
-
-`<button
-class="action green"
-onclick="finishCollection('${s.id}')"
->
-✅ ثبت نهایی جمع‌آوری
-</button>`
-
-:
-
-`<div class="notice green">
-✅ جمع‌آوری نهایی شده است.
-</div>`
-
-}
-
-
-${receiptSection}
-
-<div id="collectorMsg_${s.id}"></div>
-
-</div>
-
-`;
-
-});
-
-
-document.getElementById("collectorList").innerHTML=html;
-
-}
-
-
-/* =====================================================
-   REGISTER ARRIVAL
-===================================================== */
-
-function registerArrival(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-let now =
-new Date();
-
-let time =
-now.toLocaleTimeString(
-"fa-IR",
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-);
-
-school.arrivalTime=time;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   UPDATE RECEIVED FILES
-===================================================== */
-
-function updateReceivedFiles(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-let value =
-Number(
-document.getElementById("files_"+id).value
-);
-
-if(value<0){
-
-alert("تعداد نمی‌تواند منفی باشد.");
-return;
-
-}
-
-school.receivedFiles=value;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   FINISH COLLECTION
-===================================================== */
-
-function finishCollection(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-if(!school.arrivalTime){
-
-alert("ابتدا رسیدن به آموزشگاه را ثبت کنید.");
-return;
-
-}
-
-let value =
-Number(
-document.getElementById("files_"+id).value
-);
-
-school.receivedFiles=value;
-school.collected=true;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   RECEIPT DELIVERED
-===================================================== */
-
-function receiptDelivered(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-if(school.receiptSent<=0){
-
-alert("برای این آموزشگاه قبضی ثبت نشده است.");
-return;
-
-}
-
-school.receiptDelivered=true;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   SCHOOL PANEL
-===================================================== */
-
-function renderSchoolSelector(){
-
-let select =
-document.getElementById("schoolSelect");
-
-select.innerHTML="";
-
-data.schools.forEach(s=>{
-
-select.innerHTML+=
-`<option value="${s.id}">
-${s.name}
-</option>`;
-
-});
-
-}
-
-
-function renderSchoolPanel(){
-
-let id =
-document.getElementById("schoolSelect").value;
-
-let s =
-data.schools.find(x=>x.id===id);
-
-if(!s)return;
-
-
-let etaBlock="";
-
-if(s.arrivalTime){
-
-etaBlock=`
-
-<div class="notice green">
-
-📍 جمع‌آورنده به آموزشگاه مراجعه کرده است.
-
-<br>
-
-زمان دقیق مراجعه:
-<strong>${s.arrivalTime}</strong>
-
-</div>
-
-`;
-
-}
-else if(s.ready){
-
-etaBlock=`
-
-<div class="notice orange">
-
-🚚 جمع‌آورنده در مسیر آموزشگاه است.
-
-<br>
-
-زمان تقریبی رسیدن:
-<strong>${s.eta} دقیقه دیگر</strong>
-
-</div>
-
-`;
-}
-else{
-
-etaBlock=`
-
-<div class="notice">
-
-هنوز درخواست جمع‌آوری ثبت نشده است.
-
-</div>
-
-`;
-
-}
-
-
-let receiptBlock="";
-
-
-if(s.receiptRequested>0){
-
-receiptBlock+=`
-
-<div class="card">
-
-<h2>🧾 وضعیت قبض پستی</h2>
-
-<div class="notice orange">
-
-با توجه به درخواست شما تعداد
-
-<strong>${s.receiptRequested}</strong>
-
-قبض پستی به شما تحویل داده می‌شود.
-
-<br>
-
-در صورت دریافت این گزینه را تأیید کنید.
-
-</div>
-
-${
-s.receiptSent>0
-
-?
-
-`<div class="notice green">
-تعداد ${s.receiptSent} قبض برای شما ارسال شده است.
-</div>`
-
-:
-
-`<div class="notice orange">
-در انتظار ارسال قبض توسط مدیریت.
-</div>`
-}
-
-
-${
-s.receiptDelivered
-
-?
-
-`<div class="notice green">
-✅ دریافت قبض توسط آموزشگاه تأیید شده است.
-</div>`
-
-:
-
-(s.receiptSent>0 ?
-
-`<button
-class="action green"
-onclick="schoolConfirmReceipt('${s.id}')"
->
-✅ قبض‌ها را دریافت کردم
-</button>`
-
-:"")
-
-}
-
-</div>
-
-`;
-
-}
-
-
-document.getElementById("schoolContent").innerHTML=
-
-`
-
-<div class="card">
-
-<h2>${s.name}</h2>
-
-<div class="row">
-<span>آدرس</span>
-<strong>${s.address}</strong>
-</div>
-
-<div class="row">
-<span>تعداد پرونده اعلامی</span>
-<strong>${s.declaredFiles}</strong>
-</div>
-
-${etaBlock}
-
-</div>
-
-
-<div class="card">
-
-<h2>📦 اعلام آماده بودن پرونده</h2>
-
-<label>تعداد پرونده آماده</label>
-
-<input
-type="number"
-id="schoolFiles_${s.id}"
-value="${s.declaredFiles}"
-min="0"
->
-
-<button
-class="action"
-onclick="schoolDeclareReady('${s.id}')"
->
-📢 اعلام آماده بودن پرونده‌ها
-</button>
-
-<div id="schoolReadyMsg_${s.id}"></div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🧾 درخواست قبض پستی</h2>
-
-<label>تعداد قبض موردنیاز</label>
-
-<input
-type="number"
-id="schoolReceipt_${s.id}"
-value="${s.receiptRequested || ""}"
-min="0"
-placeholder="مثلاً 20"
->
-
-<button
-class="action"
-onclick="schoolRequestReceipt('${s.id}')"
->
-ثبت درخواست قبض
-</button>
-
-<div id="schoolReceiptMsg_${s.id}"></div>
-
-</div>
-
-
-<div class="card">
-
-<h2>💳 پرداخت</h2>
-
-<p>
-در نسخه واقعی، پس از ثبت درخواست، کاربر به درگاه بانکی منتقل می‌شود.
-</p>
-
-<button
-class="action"
-onclick="openPayment()"
->
-💳 انتقال به درگاه پرداخت
-</button>
-
-<div id="paymentMsg"></div>
-
-</div>
-
-
-${receiptBlock}
-
-`;
-
-}
-
-
-/* =====================================================
-   SCHOOL DECLARE READY
-===================================================== */
-
-function schoolDeclareReady(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-let count =
-Number(
-document.getElementById("schoolFiles_"+id).value
-);
-
-if(count<0){
-
-alert("تعداد صحیح وارد کنید.");
-return;
-
-}
-
-school.declaredFiles=count;
-school.ready=true;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   SCHOOL REQUEST RECEIPTS
-===================================================== */
-
-function schoolRequestReceipt(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-let count =
-Number(
-document.getElementById("schoolReceipt_"+id).value
-);
-
-if(count<=0){
-
-alert("تعداد قبض را وارد کنید.");
-return;
-
-}
-
-school.receiptRequested=count;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   SCHOOL CONFIRM RECEIPT
-===================================================== */
-
-function schoolConfirmReceipt(id){
-
-let school =
-data.schools.find(s=>s.id===id);
-
-if(school.receiptSent<=0){
-
-alert("هنوز قبضی توسط مدیریت ارسال نشده است.");
-return;
-
-}
-
-school.receiptDelivered=true;
-
-saveData();
-
-}
-
-
-/* =====================================================
-   PAYMENT DEMO
-===================================================== */
-
-function openPayment(){
-
-document.getElementById("paymentMsg").innerHTML=
-
-`
-<div class="notice green">
-
-💳 در نسخه نمایشی، انتقال به درگاه شبیه‌سازی شد.
-
-<br>
-
-در نسخه واقعی این قسمت به درگاه بانکی متصل خواهد شد.
-
-</div>
-`;
-
-}
-
-
-/* =====================================================
-   DETAILS
-===================================================== */
-
-function showDetails(id){
-
-let s =
-data.schools.find(x=>x.id===id);
-
-let difference =
-Number(s.declaredFiles||0) -
-Number(s.receivedFiles||0);
-
-
-document.getElementById("detailContent").innerHTML=
-
-`
-
-<h3>${s.name}</h3>
-
-<div class="row">
-<span>آدرس</span>
-<strong>${s.address}</strong>
-</div>
-
-<div class="row">
-<span>تعداد اعلام‌شده</span>
-<strong>${s.declaredFiles}</strong>
-</div>
-
-<div class="row">
-<span>تعداد دریافت‌شده</span>
-<strong>${s.collected ? s.receivedFiles : "هنوز نهایی نشده"}</strong>
-</div>
-
-<div class="row">
-<span>میزان مغایرت</span>
-<strong>${difference}</strong>
-</div>
-
-<div class="row">
-<span>زمان دقیق مراجعه</span>
-<strong>${s.arrivalTime || "ثبت نشده"}</strong>
-</div>
-
-<div class="row">
-<span>زمان تقریبی رسیدن</span>
-<strong>${s.eta} دقیقه</strong>
-</div>
-
-<div class="row">
-<span>تعداد قبض درخواستی</span>
-<strong>${s.receiptRequested}</strong>
-</div>
-
-<div class="row">
-<span>تعداد قبض ارسالی</span>
-<strong>${s.receiptSent}</strong>
-</div>
-
-<div class="row">
-<span>قبض تحویل شده</span>
-<strong>${s.receiptDelivered ? "بله" : "خیر"}</strong>
-</div>
-
-`;
-
-document.getElementById("detailModal").style.display="flex";
-
-}
-
-
-function closeModal(){
-
-document.getElementById("detailModal").style.display="none";
-
-}
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function resetDemo(){
-
-if(!confirm("اطلاعات دمو به حالت اولیه برگردد؟")){
-return;
-}
-
-localStorage.removeItem(STORAGE_KEY);
-
-data=loadData();
-
-renderAll();
-
-alert("اطلاعات دمو بازنشانی شد.");
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderAll(){
-
-renderManager();
-
-renderCollector();
-
-renderSchoolSelector();
-
-renderSchoolPanel();
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-renderAll();
-
-showPanel("manager");
-
-</script>
-
-</body>
-</html>
+@media(max-width:600px){
+    .header h1{
+        font-size:18px;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+    .logout{
+        position
