@@ -3,1256 +3,369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BOXIT | سامانه جمع‌آوری آموزشگاه‌ها</title>
+<title>BOXIT | مدیریت جمع‌آوری آموزشگاه‌ها</title>
 
 <style>
-
 :root{
-  --boxit:#7d1735;
-  --boxit-dark:#5b1027;
-  --boxit-light:#f8eaf0;
-  --green:#198754;
-  --orange:#e59b18;
-  --red:#c62828;
-  --gray:#f4f5f7;
-  --text:#252525;
+    --boxit:#7b1735;
+    --boxit-dark:#5b1027;
+    --boxit-light:#f7e9ee;
+    --green:#198754;
+    --orange:#e39a17;
+    --red:#c62828;
+    --gray:#f4f5f7;
+    --text:#292929;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:Tahoma,Arial,sans-serif;
-}
+*{box-sizing:border-box}
 
 body{
-  margin:0;
-  background:var(--gray);
-  color:var(--text);
+    margin:0;
+    background:var(--gray);
+    color:var(--text);
+    font-family:Tahoma,Arial,sans-serif;
 }
-
-/* HEADER */
 
 header{
-  background:linear-gradient(135deg,var(--boxit-dark),var(--boxit));
-  color:white;
-  padding:18px;
-  box-shadow:0 3px 12px rgba(0,0,0,.15);
+    background:linear-gradient(135deg,var(--boxit-dark),var(--boxit));
+    color:white;
+    padding:18px;
+    box-shadow:0 3px 12px #0002;
 }
 
-.header-content{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.header{
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .logo{
-  font-size:25px;
-  font-weight:bold;
+    font-size:28px;
+    font-weight:bold;
 }
 
-.logo-sub{
-  font-size:12px;
-  opacity:.85;
-  margin-top:4px;
+.subtitle{
+    font-size:12px;
+    margin-top:5px;
+    opacity:.85;
 }
-
-.user{
-  text-align:left;
-  font-size:13px;
-}
-
-/* CONTAINER */
 
 .container{
-  width:94%;
-  max-width:1100px;
-  margin:22px auto;
+    width:94%;
+    max-width:1150px;
+    margin:20px auto;
 }
 
-/* NAV */
-
-.nav{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  margin-bottom:18px;
+.tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+    overflow:auto;
 }
 
-.nav button{
-  border:none;
-  background:white;
-  color:var(--boxit);
-  border:1px solid #ddd;
-  padding:11px 17px;
-  border-radius:10px;
-  cursor:pointer;
-  white-space:nowrap;
+.tabs button{
+    border:1px solid #ddd;
+    background:white;
+    color:var(--boxit);
+    padding:12px 18px;
+    border-radius:10px;
+    white-space:nowrap;
+    cursor:pointer;
 }
 
-.nav button.active{
-  background:var(--boxit);
-  color:white;
+.tabs button.active{
+    background:var(--boxit);
+    color:white;
 }
-
-/* CARD */
 
 .card{
-  background:white;
-  border-radius:15px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 3px 15px rgba(0,0,0,.07);
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 3px 14px #0000000d;
 }
 
+.card h2,
 .card h3{
-  margin-top:0;
-  color:var(--boxit);
+    color:var(--boxit);
+    margin-top:0;
 }
-
-/* STATS */
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
 }
 
 .stat{
-  background:white;
-  border-radius:14px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 3px 12px rgba(0,0,0,.06);
-  border-top:4px solid var(--boxit);
+    background:white;
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+    border-top:4px solid var(--boxit);
+    box-shadow:0 3px 12px #0000000d;
 }
 
-.stat-number{
-  font-size:28px;
-  font-weight:bold;
-  color:var(--boxit);
-  margin-top:8px;
+.stat strong{
+    display:block;
+    font-size:28px;
+    color:var(--boxit);
+    margin-top:8px;
 }
-
-/* GRID */
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
 }
 
-/* INPUT */
+.school{
+    border:1px solid #e5e5e5;
+    border-radius:13px;
+    padding:16px;
+    margin-bottom:12px;
+}
+
+.school-title{
+    color:var(--boxit);
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:7px 0;
+    border-bottom:1px solid #f0f0f0;
+}
+
+.row:last-child{
+    border-bottom:none;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.ready{background:#fff1ce;color:#765200}
+.done{background:#dff4e7;color:#12683b}
+.wait{background:#eee;color:#555}
+.danger{background:#fde0e0;color:#a00000}
 
 input,select{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:9px;
-  margin:6px 0;
-  font-size:15px;
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    margin:6px 0 10px;
+    font-size:15px;
 }
 
-/* BUTTON */
-
-.btn{
-  width:100%;
-  border:none;
-  padding:13px;
-  border-radius:9px;
-  margin-top:8px;
-  cursor:pointer;
-  font-size:15px;
-  background:var(--boxit);
-  color:white;
+button.action{
+    width:100%;
+    border:0;
+    border-radius:9px;
+    padding:12px;
+    margin-top:7px;
+    background:var(--boxit);
+    color:white;
+    font-size:14px;
+    cursor:pointer;
 }
 
-.btn:hover{
-  background:var(--boxit-dark);
+button.green{background:var(--green)}
+button.orange{background:var(--orange)}
+button.gray{background:#666}
+button.red{background:var(--red)}
+
+.notice{
+    padding:13px;
+    border-radius:10px;
+    margin:10px 0;
+    line-height:1.9;
 }
 
-.btn-green{
-  background:var(--green);
+.notice.green{
+    background:#e2f4e8;
+    color:#16643a;
 }
 
-.btn-orange{
-  background:var(--orange);
+.notice.orange{
+    background:#fff3d2;
+    color:#755300;
 }
 
-.btn-gray{
-  background:#666;
+.notice.red{
+    background:#fde3e3;
+    color:#9d0000;
 }
 
-/* STATUS */
-
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
-  margin-top:5px;
-}
-
-.status-ready{
-  background:#fff1cf;
-  color:#8a5b00;
-}
-
-.status-done{
-  background:#d9f2e3;
-  color:#126b3d;
-}
-
-.status-wait{
-  background:#e8e8e8;
-  color:#555;
-}
-
-.status-danger{
-  background:#fde0e0;
-  color:#a50000;
-}
-
-/* TABLE */
-
-.table-wrapper{
-  overflow-x:auto;
+.table-wrap{
+    overflow-x:auto;
 }
 
 table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:750px;
+    width:100%;
+    min-width:900px;
+    border-collapse:collapse;
 }
 
 th{
-  background:var(--boxit);
-  color:white;
-  padding:12px;
-  text-align:center;
+    background:var(--boxit);
+    color:white;
+    padding:12px;
 }
 
 td{
-  padding:11px;
-  border-bottom:1px solid #eee;
-  text-align:center;
+    padding:11px;
+    text-align:center;
+    border-bottom:1px solid #eee;
 }
 
-tr:hover{
-  background:#faf5f7;
+td input{
+    width:85px;
+    margin:0;
 }
 
-/* ITEM */
-
-.item{
-  border:1px solid #eee;
-  border-radius:12px;
-  padding:15px;
-  margin-top:10px;
+.small{
+    font-size:12px;
+    color:#777;
 }
-
-.item-title{
-  font-weight:bold;
-  color:var(--boxit);
-  font-size:16px;
-}
-
-/* ALERT */
-
-.alert{
-  padding:14px;
-  border-radius:10px;
-  margin-top:10px;
-}
-
-.alert-success{
-  background:#e2f4e8;
-  color:#176b3b;
-}
-
-.alert-warning{
-  background:#fff4d5;
-  color:#765300;
-}
-
-/* HIDDEN */
 
 .hidden{
-  display:none;
+    display:none!important;
 }
 
-/* MODAL */
-
 .modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:10;
+    position:fixed;
+    inset:0;
+    background:#0009;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    z-index:99;
 }
 
 .modal-box{
-  background:white;
-  width:100%;
-  max-width:550px;
-  max-height:90vh;
-  overflow:auto;
-  border-radius:17px;
-  padding:22px;
+    background:white;
+    width:100%;
+    max-width:550px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:16px;
+    padding:20px;
 }
 
 .close{
-  float:left;
-  border:none;
-  background:#eee;
-  border-radius:8px;
-  padding:7px 12px;
+    float:left;
+    border:0;
+    background:#eee;
+    padding:8px 12px;
+    border-radius:8px;
 }
-
-/* RESPONSIVE */
 
 @media(max-width:750px){
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .header-content{
-    flex-direction:column;
-    gap:10px;
-    text-align:center;
-  }
-
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .grid{grid-template-columns:1fr}
+    .header{flex-direction:column;text-align:center;gap:10px}
 }
-
 </style>
 </head>
-
 
 <body>
 
 <header>
+<div class="header">
+    <div>
+        <div class="logo">BOXIT</div>
+        <div class="subtitle">سامانه مدیریت و جمع‌آوری آموزشگاه‌ها</div>
+    </div>
 
-<div class="header-content">
-
-<div>
-<div class="logo">BOXIT</div>
-<div class="logo-sub">
-سامانه مدیریت و جمع‌آوری آموزشگاه‌ها
+    <div>
+        کاربر: <strong id="currentUser">---</strong>
+        <br>
+        <span class="small" style="color:white">نسخه نمایشی</span>
+    </div>
 </div>
-</div>
-
-<div class="user">
-کاربر: <strong id="userName">مدیر سیستم</strong>
-<br>
-سطح دسترسی: <span id="userRole">مدیریت</span>
-</div>
-
-</div>
-
 </header>
 
 
 <div class="container">
 
+<div class="tabs">
 
-<!-- NAV -->
-
-<div class="nav">
-
-<button id="navManager" onclick="showPanel('manager')" class="active">
+<button id="tabManager" onclick="showPanel('manager')">
 👨‍💼 مدیریت
 </button>
 
-<button id="navCollector" onclick="showPanel('collector')">
+<button id="tabCollector" onclick="showPanel('collector')">
 🚚 جمع‌آوری
 </button>
 
-<button id="navSchool" onclick="showPanel('school')">
+<button id="tabSchool" onclick="showPanel('school')">
 🏫 آموزشگاه
 </button>
 
 </div>
 
 
-<!-- ================================================= -->
-<!-- MANAGER -->
-<!-- ================================================= -->
+<!-- ==================== MANAGEMENT ==================== -->
 
 <section id="managerPanel">
-
 
 <div class="stats">
 
 <div class="stat">
-آموزشگاه‌ها
-<div class="stat-number">200</div>
+کل آموزشگاه‌ها
+<strong id="totalSchools">200</strong>
 </div>
 
 <div class="stat">
 آماده جمع‌آوری
-<div class="stat-number">18</div>
+<strong id="readySchools">0</strong>
 </div>
 
 <div class="stat">
 جمع‌آوری‌شده
-<div class="stat-number">142</div>
+<strong id="collectedSchools">0</strong>
 </div>
 
 <div class="stat">
-پرونده امروز
-<div class="stat-number">785</div>
+کل پرونده‌های اعلامی
+<strong id="totalFiles">0</strong>
 </div>
 
 </div>
-
-
-<br>
 
 
 <div class="card">
 
-<h3>📊 گزارش عملیات امروز</h3>
+<h2>📊 گزارش عملیات روزانه</h2>
 
-<div class="table-wrapper">
+<p class="small">
+مدیریت می‌تواند وضعیت هر آموزشگاه را به‌صورت جداگانه مشاهده کند.
+</p>
+
+<div class="table-wrap">
 
 <table>
 
 <thead>
 
 <tr>
-
 <th>آموزشگاه</th>
-
-<th>اعلام پرونده</th>
-
-<th>تحویل گرفته</th>
-
-<th>مراجعه</th>
-
+<th>پرونده اعلامی</th>
+<th>پرونده دریافتی</th>
+<th>ساعت مراجعه</th>
 <th>قبض ارسالی</th>
-
-<th>وضعیت</th>
-
-<th>جزئیات</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-
-<tr>
-
-<td>آموزشگاه فرهنگ</td>
-
-<td>45</td>
-
-<td>43</td>
-
-<td>10:37</td>
-
-<td>20</td>
-
-<td>
-<span class="status status-done">
-تکمیل
-</span>
-</td>
-
-<td>
-<button class="btn" onclick="showDetails('فرهنگ',45,43,'10:37',20)">
-مشاهده
-</button>
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>آموزشگاه دانش</td>
-
-<td>32</td>
-
-<td>32</td>
-
-<td>11:15</td>
-
-<td>0</td>
-
-<td>
-<span class="status status-done">
-تکمیل
-</span>
-</td>
-
-<td>
-<button class="btn" onclick="showDetails('دانش',32,32,'11:15',0)">
-مشاهده
-</button>
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>آموزشگاه آینده</td>
-
-<td>50</td>
-
-<td>—</td>
-
-<td>—</td>
-
-<td>30</td>
-
-<td>
-<span class="status status-ready">
-آماده جمع‌آوری
-</span>
-</td>
-
-<td>
-<button class="btn" onclick="showDetails('آینده',50,0,'—',30)">
-مشاهده
-</button>
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>آموزشگاه امید</td>
-
-<td>38</td>
-
-<td>35</td>
-
-<td>12:05</td>
-
-<td>15</td>
-
-<td>
-<span class="status status-danger">
-مغایرت
-</span>
-</td>
-
-<td>
-<button class="btn" onclick="showDetails('امید',38,35,'12:05',15)">
-مشاهده
-</button>
-</td>
-
-</tr>
-
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>🧾 مدیریت قبض‌های پستی</h3>
-
-<p>
-مدیر می‌تواند تعداد قبض ارسالی برای هر آموزشگاه را ثبت کند.
-</p>
-
-
-<div class="grid">
-
-<div>
-
-<label>انتخاب آموزشگاه</label>
-
-<select id="invoiceSchool">
-
-<option>آموزشگاه فرهنگ</option>
-<option>آموزشگاه دانش</option>
-<option>آموزشگاه آینده</option>
-<option>آموزشگاه امید</option>
-
-</select>
-
-</div>
-
-
-<div>
-
-<label>تعداد قبض ارسالی</label>
-
-<input
-type="number"
-id="invoiceCount"
-placeholder="مثلاً 20"
->
-
-</div>
-
-</div>
-
-
-<button class="btn" onclick="registerInvoices()">
-ثبت تعداد قبض ارسالی
-</button>
-
-<div id="invoiceResult"></div>
-
-</div>
-
-
-<div class="card">
-
-<h3>📈 وضعیت جمع‌آورنده‌ها</h3>
-
-
-<div class="grid">
-
-
-<div class="item">
-
-<div class="item-title">
-جمع‌آورنده ۱
-</div>
-
-تعداد مأموریت: 8
-<br>
-انجام شده: 5
-<br>
-باقی‌مانده: 3
-
-<br>
-
-<span class="status status-ready">
-در حال فعالیت
-</span>
-
-</div>
-
-
-<div class="item">
-
-<div class="item-title">
-جمع‌آورنده ۲
-</div>
-
-تعداد مأموریت: 7
-<br>
-انجام شده: 7
-<br>
-باقی‌مانده: 0
-
-<br>
-
-<span class="status status-done">
-ماموریت تکمیل شد
-</span>
-
-</div>
-
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ================================================= -->
-<!-- COLLECTOR -->
-<!-- ================================================= -->
-
-<section id="collectorPanel" class="hidden">
-
-
-<div class="stats">
-
-<div class="stat">
-مأموریت امروز
-<div class="stat-number">8</div>
-</div>
-
-<div class="stat">
-انجام‌شده
-<div class="stat-number">5</div>
-</div>
-
-<div class="stat">
-باقی‌مانده
-<div class="stat-number">3</div>
-</div>
-
-<div class="stat">
-پرونده
-<div class="stat-number">120</div>
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>🚚 مأموریت‌های امروز</h3>
-
-
-<div class="item">
-
-<div class="item-title">
-۱. آموزشگاه فرهنگ
-</div>
-
-تعداد اعلام‌شده توسط آموزشگاه:
-<strong>45 پرونده</strong>
-
-<br>
-
-تعداد قبض:
-<strong>20 عدد</strong>
-
-<br>
-
-آدرس:
-خیابان نمونه، پلاک ۱۲
-
-<br>
-
-<span class="status status-ready">
-آماده جمع‌آوری
-</span>
-
-
-<button class="btn" onclick="arrival('culture')">
-📍 ثبت زمان دقیق مراجعه
-</button>
-
-
-<label>
-تعداد واقعی پرونده تحویل‌گرفته‌شده
-</label>
-
-<input
-type="number"
-id="cultureFiles"
-value="43"
-min="0"
->
-
-<button class="btn-orange btn" onclick="editCollection('culture')">
-✏️ اصلاح / ثبت تعداد دریافتی
-</button>
-
-
-<button class="btn-green btn" onclick="finishCollection('culture')">
-✅ ثبت نهایی جمع‌آوری
-</button>
-
-
-<button class="btn btn-gray" onclick="invoiceDelivered('culture')">
-🧾 قبض تحویل شد
-</button>
-
-
-<div id="cultureResult"></div>
-
-</div>
-
-
-<div class="item">
-
-<div class="item-title">
-۲. آموزشگاه دانش
-</div>
-
-تعداد اعلام‌شده:
-<strong>32 پرونده</strong>
-
-<br>
-
-تعداد قبض:
-<strong>0</strong>
-
-<br>
-
-آدرس:
-میدان اصلی، خیابان دوم
-
-<br>
-
-<span class="status status-ready">
-آماده جمع‌آوری
-</span>
-
-
-<button class="btn" onclick="arrival('danesh')">
-📍 ثبت زمان دقیق مراجعه
-</button>
-
-
-<label>
-تعداد واقعی پرونده دریافتی
-</label>
-
-<input
-type="number"
-id="daneshFiles"
-value="32"
-min="0"
->
-
-<button class="btn-orange btn" onclick="editCollection('danesh')">
-✏️ اصلاح / ثبت تعداد دریافتی
-</button>
-
-
-<button class="btn-green btn" onclick="finishCollection('danesh')">
-✅ ثبت نهایی جمع‌آوری
-</button>
-
-
-<div id="daneshResult"></div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-<!-- ================================================= -->
-<!-- SCHOOL -->
-<!-- ================================================= -->
-
-<section id="schoolPanel" class="hidden">
-
-
-<div class="card">
-
-<h3>🏫 آموزشگاه فرهنگ</h3>
-
-<div class="alert alert-success">
-
-پرونده‌های شما آماده جمع‌آوری هستند.
-
-<br>
-
-تعداد پرونده:
-<strong>45</strong>
-
-</div>
-
-<br>
-
-<h3>🚚 زمان تقریبی رسیدن جمع‌آوری</h3>
-
-<div class="alert alert-warning">
-
-جمع‌آورنده در حال حرکت است.
-
-<br>
-
-<strong style="font-size:20px;">
-حدود ۳۰ تا ۴۵ دقیقه دیگر
-</strong>
-
-<br>
-
-آخرین بروزرسانی: 10:05
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>📦 درخواست جمع‌آوری پرونده</h3>
-
-تعداد پرونده آماده:
-
-<input
-type="number"
-id="schoolFileCount"
-value="45"
->
-
-<button class="btn">
-ثبت / اصلاح تعداد پرونده
-</button>
-
-</div>
-
-
-<div class="card">
-
-<h3>🧾 درخواست قبض پستی</h3>
-
-<p>
-تعداد قبض موردنیاز خود را وارد کنید.
-</p>
-
-<input
-type="number"
-id="schoolInvoiceCount"
-placeholder="مثلاً 20"
-min="1"
->
-
-<button class="btn" onclick="requestInvoice()">
-ثبت درخواست قبض
-</button>
-
-<div id="schoolInvoiceResult"></div>
-
-</div>
-
-
-<div class="card">
-
-<h3>💳 پرداخت قبض</h3>
-
-<p>
-پس از ثبت درخواست، امکان انتقال به درگاه پرداخت فراهم می‌شود.
-</p>
-
-<button class="btn" onclick="payment()">
-انتقال به درگاه بانک
-</button>
-
-<div id="paymentResult"></div>
-
-</div>
-
-
-<div class="card">
-
-<h3>📮 تأیید دریافت قبض</h3>
-
-<div class="alert alert-warning">
-
-با توجه به درخواست شما تعداد
-<strong id="invoiceDisplay">20</strong>
-قبض پستی به شما تحویل داده می‌شود.
-
-<br><br>
-
-در صورت دریافت قبض‌ها، گزینه زیر را تأیید کنید.
-
-</div>
-
-<button class="btn-green btn" onclick="confirmInvoice()">
-✅ قبض‌ها را دریافت کردم
-</button>
-
-<div id="confirmInvoiceResult"></div>
-
-</div>
-
-
-<div class="card">
-
-<h3>📋 وضعیت درخواست</h3>
-
-<div class="item">
-
-پرونده‌ها:
-<span class="status status-ready">
-در انتظار جمع‌آوری
-</span>
-
-<br><br>
-
-قبض:
-<span class="status status-ready">
-در انتظار تحویل
-</span>
-
-</div>
-
-</div>
-
-</section>
-
-</div>
-
-
-<!-- ================================================= -->
-<!-- MODAL -->
-<!-- ================================================= -->
-
-<div class="modal" id="detailModal">
-
-<div class="modal-box">
-
-<button class="close" onclick="closeModal()">
-✕
-</button>
-
-<h3>جزئیات آموزشگاه</h3>
-
-<div id="detailContent"></div>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* PANEL */
-
-function showPanel(panel){
-
-document.getElementById("managerPanel").classList.add("hidden");
-document.getElementById("collectorPanel").classList.add("hidden");
-document.getElementById("schoolPanel").classList.add("hidden");
-
-document.getElementById("navManager").classList.remove("active");
-document.getElementById("navCollector").classList.remove("active");
-document.getElementById("navSchool").classList.remove("active");
-
-if(panel==="manager"){
-
-document.getElementById("managerPanel").classList.remove("hidden");
-document.getElementById("navManager").classList.add("active");
-
-}
-
-if(panel==="collector"){
-
-document.getElementById("collectorPanel").classList.remove("hidden");
-document.getElementById("navCollector").classList.add("active");
-
-}
-
-if(panel==="school"){
-
-document.getElementById("schoolPanel").classList.remove("hidden");
-document.getElementById("navSchool").classList.add("active");
-
-}
-
-}
-
-
-/* ARRIVAL */
-
-function arrival(type){
-
-let result =
-document.getElementById(type+"Result");
-
-let time =
-new Date().toLocaleTimeString("fa-IR");
-
-result.innerHTML =
-'<div class="alert alert-success">' +
-'📍 زمان دقیق مراجعه ثبت شد: <strong>' +
-time +
-'</strong></div>';
-
-}
-
-
-/* EDIT COLLECTION */
-
-function editCollection(type){
-
-let input =
-document.getElementById(type+"Files");
-
-let result =
-document.getElementById(type+"Result");
-
-result.innerHTML =
-'<div class="alert alert-warning">' +
-'تعداد دریافتی اصلاح شد: <strong>' +
-input.value +
-' پرونده</strong>' +
-'</div>';
-
-}
-
-
-/* FINISH */
-
-function finishCollection(type){
-
-let result =
-document.getElementById(type+"Result");
-
-result.innerHTML =
-'<div class="alert alert-success">' +
-'✅ جمع‌آوری با موفقیت ثبت و نهایی شد.' +
-'</div>';
-
-}
-
-
-/* INVOICE DELIVERED */
-
-function invoiceDelivered(type){
-
-let result =
-document.getElementById(type+"Result");
-
-result.innerHTML =
-'<div class="alert alert-success">' +
-'🧾 تحویل قبض ثبت شد.' +
-'</div>';
-
-}
-
-
-/* MANAGER DETAILS */
-
-function showDetails(name, announced, received, time, invoices){
-
-let difference =
-announced - received;
-
-document.getElementById("detailContent").innerHTML =
-
-"<h3>"+name+"</h3>" +
-
-"<p>تعداد پرونده اعلام‌شده: <strong>"+
-announced+
-"</strong></p>" +
-
-"<p>تعداد پرونده تحویل‌گرفته‌شده: <strong>"+
-received+
-"</strong></p>" +
-
-"<p>اختلاف: <strong>"+
-difference+
-"</strong></p>" +
-
-"<p>زمان دقیق مراجعه: <strong>"+
-time+
-"</strong></p>" +
-
-"<p>تعداد قبض ارسالی: <strong>"+
-invoices+
-"</strong></p>";
-
-document.getElementById("detailModal").style.display="flex";
-
-}
-
-
-function closeModal(){
-
-document.getElementById("detailModal").style.display="none";
-
-}
-
-
-/* MANAGER INVOICE */
-
-function registerInvoices(){
-
-let school =
-document.getElementById("invoiceSchool").value;
-
-let count =
-document.getElementById("invoiceCount").value;
-
-if(!count){
-
-alert("تعداد قبض را وارد کنید.");
-
-return;
-
-}
-
-document.getElementById("invoiceResult").innerHTML =
-
-'<div class="alert alert-success">' +
-'تعداد <strong>'+count+
-'</strong> قبض برای <strong>'+
-school+
-'</strong> ثبت شد.' +
-'</div>';
-
-}
-
-
-/* SCHOOL INVOICE */
-
-function requestInvoice(){
-
-let count =
-document.getElementById("schoolInvoiceCount").value;
-
-if(!count){
-
-alert("تعداد قبض را وارد کنید.");
-
-return;
-
-}
-
-document.getElementById("invoiceDisplay").innerText =
-count;
-
-document.getElementById("schoolInvoiceResult").innerHTML =
-
-'<div class="alert alert-success">' +
-'درخواست <strong>'+count+
-'</strong> قبض ثبت شد.' +
-'</div>';
-
-}
-
-
-/* PAYMENT */
-
-function payment(){
-
-document.getElementById("paymentResult").innerHTML =
-
-'<div class="alert alert-success">' +
-'💳 انتقال به درگاه بانک در نسخه نهایی انجام خواهد شد.' +
-'</div>';
-
-}
-
-
-/* CONFIRM INVOICE */
-
-function confirmInvoice(){
-
-document.getElementById("confirmInvoiceResult").innerHTML =
-
-'<div class="alert alert-success">' +
-'✅ دریافت قبض‌ها توسط آموزشگاه تأیید شد.' +
-'</div>';
-
-}
-
-</script>
-
-</body>
-</html>
+<th>قبض تح
