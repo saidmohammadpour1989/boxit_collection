@@ -1,636 +1,1256 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BOXIT Collection</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Tahoma, sans-serif;
-    }
+<title>BOXIT | سامانه جمع‌آوری آموزشگاه‌ها</title>
 
-    body {
-      margin: 0;
-      background: #f4f6f8;
-      color: #222;
-    }
+<style>
 
-    header {
-      background: #222;
-      color: white;
-      padding: 18px;
-      text-align: center;
-    }
+:root{
+  --boxit:#7d1735;
+  --boxit-dark:#5b1027;
+  --boxit-light:#f8eaf0;
+  --green:#198754;
+  --orange:#e59b18;
+  --red:#c62828;
+  --gray:#f4f5f7;
+  --text:#252525;
+}
 
-    header h2 {
-      margin: 0 0 5px;
-    }
+*{
+  box-sizing:border-box;
+  font-family:Tahoma,Arial,sans-serif;
+}
 
-    .container {
-      width: 94%;
-      max-width: 850px;
-      margin: 20px auto;
-    }
+body{
+  margin:0;
+  background:var(--gray);
+  color:var(--text);
+}
 
-    .user-bar {
-      background: white;
-      padding: 15px;
-      border-radius: 14px;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-    }
+/* HEADER */
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-    }
+header{
+  background:linear-gradient(135deg,var(--boxit-dark),var(--boxit));
+  color:white;
+  padding:18px;
+  box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
 
-    .card h3 {
-      margin-top: 0;
-    }
+.header-content{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-    input, select {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border: 1px solid #ddd;
-      border-radius: 9px;
-      font-size: 16px;
-    }
+.logo{
+  font-size:25px;
+  font-weight:bold;
+}
 
-    button {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 9px;
-      background: #222;
-      color: white;
-      font-size: 16px;
-      margin-top: 8px;
-      cursor: pointer;
-    }
+.logo-sub{
+  font-size:12px;
+  opacity:.85;
+  margin-top:4px;
+}
 
-    button.secondary {
-      background: #666;
-    }
+.user{
+  text-align:left;
+  font-size:13px;
+}
 
-    button.danger {
-      background: #b00020;
-    }
+/* CONTAINER */
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+.container{
+  width:94%;
+  max-width:1100px;
+  margin:22px auto;
+}
 
-    .stat {
-      background: #f8f8f8;
-      padding: 18px;
-      border-radius: 12px;
-      text-align: center;
-    }
+/* NAV */
 
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      margin-top: 8px;
-    }
+.nav{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin-bottom:18px;
+}
 
-    .status {
-      padding: 7px 10px;
-      border-radius: 20px;
-      display: inline-block;
-      font-size: 13px;
-    }
+.nav button{
+  border:none;
+  background:white;
+  color:var(--boxit);
+  border:1px solid #ddd;
+  padding:11px 17px;
+  border-radius:10px;
+  cursor:pointer;
+  white-space:nowrap;
+}
 
-    .ready {
-      background: #fff3cd;
-    }
+.nav button.active{
+  background:var(--boxit);
+  color:white;
+}
 
-    .collected {
-      background: #d4edda;
-    }
+/* CARD */
 
-    .waiting {
-      background: #e2e3e5;
-    }
+.card{
+  background:white;
+  border-radius:15px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 3px 15px rgba(0,0,0,.07);
+}
 
-    .item {
-      border: 1px solid #eee;
-      padding: 14px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
+.card h3{
+  margin-top:0;
+  color:var(--boxit);
+}
 
-    .hidden {
-      display: none;
-    }
+/* STATS */
 
-    .success {
-      background: #d4edda;
-      padding: 12px;
-      border-radius: 9px;
-      margin-top: 10px;
-    }
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
 
-    .warning {
-      background: #fff3cd;
-      padding: 12px;
-      border-radius: 9px;
-      margin-top: 10px;
-    }
+.stat{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 3px 12px rgba(0,0,0,.06);
+  border-top:4px solid var(--boxit);
+}
 
-    @media (max-width: 600px) {
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
+.stat-number{
+  font-size:28px;
+  font-weight:bold;
+  color:var(--boxit);
+  margin-top:8px;
+}
 
-      .user-bar {
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
-  </style>
+/* GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+/* INPUT */
+
+input,select{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  margin:6px 0;
+  font-size:15px;
+}
+
+/* BUTTON */
+
+.btn{
+  width:100%;
+  border:none;
+  padding:13px;
+  border-radius:9px;
+  margin-top:8px;
+  cursor:pointer;
+  font-size:15px;
+  background:var(--boxit);
+  color:white;
+}
+
+.btn:hover{
+  background:var(--boxit-dark);
+}
+
+.btn-green{
+  background:var(--green);
+}
+
+.btn-orange{
+  background:var(--orange);
+}
+
+.btn-gray{
+  background:#666;
+}
+
+/* STATUS */
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.status-ready{
+  background:#fff1cf;
+  color:#8a5b00;
+}
+
+.status-done{
+  background:#d9f2e3;
+  color:#126b3d;
+}
+
+.status-wait{
+  background:#e8e8e8;
+  color:#555;
+}
+
+.status-danger{
+  background:#fde0e0;
+  color:#a50000;
+}
+
+/* TABLE */
+
+.table-wrapper{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:750px;
+}
+
+th{
+  background:var(--boxit);
+  color:white;
+  padding:12px;
+  text-align:center;
+}
+
+td{
+  padding:11px;
+  border-bottom:1px solid #eee;
+  text-align:center;
+}
+
+tr:hover{
+  background:#faf5f7;
+}
+
+/* ITEM */
+
+.item{
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:15px;
+  margin-top:10px;
+}
+
+.item-title{
+  font-weight:bold;
+  color:var(--boxit);
+  font-size:16px;
+}
+
+/* ALERT */
+
+.alert{
+  padding:14px;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+.alert-success{
+  background:#e2f4e8;
+  color:#176b3b;
+}
+
+.alert-warning{
+  background:#fff4d5;
+  color:#765300;
+}
+
+/* HIDDEN */
+
+.hidden{
+  display:none;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:10;
+}
+
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:550px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:17px;
+  padding:22px;
+}
+
+.close{
+  float:left;
+  border:none;
+  background:#eee;
+  border-radius:8px;
+  padding:7px 12px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:750px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .header-content{
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+  }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
 <header>
-  <h2>BOXIT</h2>
-  <div>سامانه مدیریت و جمع‌آوری آموزشگاه‌ها</div>
+
+<div class="header-content">
+
+<div>
+<div class="logo">BOXIT</div>
+<div class="logo-sub">
+سامانه مدیریت و جمع‌آوری آموزشگاه‌ها
+</div>
+</div>
+
+<div class="user">
+کاربر: <strong id="userName">مدیر سیستم</strong>
+<br>
+سطح دسترسی: <span id="userRole">مدیریت</span>
+</div>
+
+</div>
+
 </header>
+
 
 <div class="container">
 
-  <!-- اطلاعات کاربر -->
-  <div class="user-bar">
-    <div>
-      کاربر:
-      <strong id="userName"></strong>
-      <br>
-      <small id="userRole"></small>
-    </div>
-
-    <button class="danger" onclick="logout()" style="width:auto;padding:9px 18px;">
-      خروج
-    </button>
-  </div>
-
-
-  <!-- ================= مدیر ================= -->
-
-  <section id="managerPanel" class="hidden">
-
-    <div class="card">
-      <h3>📊 داشبورد مدیریت</h3>
-
-      <div class="stats">
 
-        <div class="stat">
-          آموزشگاه‌ها
-          <strong id="schoolCount">200</strong>
-        </div>
+<!-- NAV -->
 
-        <div class="stat">
-          آماده جمع‌آوری
-          <strong id="readyCount">3</strong>
-        </div>
+<div class="nav">
 
-        <div class="stat">
-          جمع‌آوری‌شده
-          <strong id="collectedCount">1</strong>
-        </div>
+<button id="navManager" onclick="showPanel('manager')" class="active">
+👨‍💼 مدیریت
+</button>
 
-        <div class="stat">
-          پرونده‌های امروز
-          <strong id="fileCountManager">120</strong>
-        </div>
+<button id="navCollector" onclick="showPanel('collector')">
+🚚 جمع‌آوری
+</button>
 
-      </div>
-    </div>
+<button id="navSchool" onclick="showPanel('school')">
+🏫 آموزشگاه
+</button>
 
+</div>
 
-    <div class="card">
 
-      <h3>📋 وضعیت آموزشگاه‌ها</h3>
+<!-- ================================================= -->
+<!-- MANAGER -->
+<!-- ================================================= -->
 
-      <div class="item">
-        <strong>آموزشگاه فرهنگ</strong>
-        <br>
-        تعداد پرونده: 45
-        <br>
-        زمان اعلام: 08:30
-        <br><br>
-        <span class="status ready">آماده جمع‌آوری</span>
-      </div>
+<section id="managerPanel">
 
-      <div class="item">
-        <strong>آموزشگاه دانش</strong>
-        <br>
-        تعداد پرونده: 32
-        <br>
-        زمان جمع‌آوری: 10:15
-        <br><br>
-        <span class="status collected">جمع‌آوری شد</span>
-      </div>
 
-      <div class="item">
-        <strong>آموزشگاه آینده</strong>
-        <br>
-        تعداد پرونده: 43
-        <br><br>
-        <span class="status waiting">در انتظار اعلام</span>
-      </div>
+<div class="stats">
 
-    </div>
+<div class="stat">
+آموزشگاه‌ها
+<div class="stat-number">200</div>
+</div>
 
+<div class="stat">
+آماده جمع‌آوری
+<div class="stat-number">18</div>
+</div>
 
-    <div class="card">
+<div class="stat">
+جمع‌آوری‌شده
+<div class="stat-number">142</div>
+</div>
 
-      <h3>🚚 وضعیت جمع‌آورنده‌ها</h3>
+<div class="stat">
+پرونده امروز
+<div class="stat-number">785</div>
+</div>
 
-      <div class="item">
-        <strong>جمع‌آورنده ۱</strong>
-        <br>
-        آموزشگاه‌های امروز: 8
-        <br>
-        جمع‌آوری‌شده: 5
-        <br>
-        باقی‌مانده: 3
-        <br><br>
-        <span class="status ready">در حال فعالیت</span>
-      </div>
+</div>
 
-      <div class="item">
-        <strong>جمع‌آورنده ۲</strong>
-        <br>
-        آموزشگاه‌های امروز: 7
-        <br>
-        جمع‌آوری‌شده: 7
-        <br><br>
-        <span class="status collected">ماموریت تکمیل شد</span>
-      </div>
 
-    </div>
+<br>
 
-  </section>
 
+<div class="card">
 
-  <!-- ================= جمع‌آورنده ================= -->
+<h3>📊 گزارش عملیات امروز</h3>
 
-  <section id="collectorPanel" class="hidden">
+<div class="table-wrapper">
 
-    <div class="card">
-      <h3>🚚 مأموریت‌های امروز</h3>
+<table>
 
-      <div class="item">
+<thead>
 
-        <strong>۱. آموزشگاه فرهنگ</strong>
+<tr>
 
-        <br>
-        تعداد پرونده آماده: 45
+<th>آموزشگاه</th>
 
-        <br>
-        آدرس: خیابان نمونه، پلاک ۱۲
+<th>اعلام پرونده</th>
 
-        <br><br>
+<th>تحویل گرفته</th>
 
-        <span class="status ready">
-          آماده جمع‌آوری
-        </span>
+<th>مراجعه</th>
 
-        <button onclick="arrived('فرهنگ')">
-          📍 رسیدم به آموزشگاه
-        </button>
+<th>قبض ارسالی</th>
 
-        <button class="secondary" onclick="collect('فرهنگ')">
-          📦 ثبت جمع‌آوری
-        </button>
+<th>وضعیت</th>
 
-        <div id="cultureResult"></div>
+<th>جزئیات</th>
 
-      </div>
+</tr>
 
+</thead>
 
-      <div class="item">
 
-        <strong>۲. آموزشگاه دانش</strong>
+<tbody>
 
-        <br>
-        تعداد پرونده آماده: 32
 
-        <br>
-        آدرس: میدان اصلی، خیابان دوم
+<tr>
 
-        <br><br>
+<td>آموزشگاه فرهنگ</td>
 
-        <span class="status ready">
-          آماده جمع‌آوری
-        </span>
+<td>45</td>
 
-        <button onclick="arrived('دانش')">
-          📍 رسیدم به آموزشگاه
-        </button>
+<td>43</td>
 
-        <button class="secondary" onclick="collect('دانش')">
-          📦 ثبت جمع‌آوری
-        </button>
+<td>10:37</td>
 
-        <div id="daneshResult"></div>
+<td>20</td>
 
-      </div>
+<td>
+<span class="status status-done">
+تکمیل
+</span>
+</td>
 
-    </div>
+<td>
+<button class="btn" onclick="showDetails('فرهنگ',45,43,'10:37',20)">
+مشاهده
+</button>
+</td>
 
+</tr>
 
-    <div class="card">
 
-      <h3>📊 عملکرد امروز</h3>
+<tr>
 
-      <div class="stats">
+<td>آموزشگاه دانش</td>
 
-        <div class="stat">
-          مأموریت‌ها
-          <strong>8</strong>
-        </div>
+<td>32</td>
 
-        <div class="stat">
-          انجام‌شده
-          <strong>5</strong>
-        </div>
+<td>32</td>
 
-        <div class="stat">
-          باقی‌مانده
-          <strong>3</strong>
-        </div>
+<td>11:15</td>
 
-        <div class="stat">
-          پرونده
-          <strong>120</strong>
-        </div>
+<td>0</td>
 
-      </div>
+<td>
+<span class="status status-done">
+تکمیل
+</span>
+</td>
 
-    </div>
+<td>
+<button class="btn" onclick="showDetails('دانش',32,32,'11:15',0)">
+مشاهده
+</button>
+</td>
 
-  </section>
+</tr>
 
 
-  <!-- ================= آموزشگاه ================= -->
+<tr>
 
-  <section id="schoolPanel" class="hidden">
+<td>آموزشگاه آینده</td>
 
-    <div class="card">
+<td>50</td>
 
-      <h3>🏫 اعلام آماده بودن پرونده‌ها</h3>
+<td>—</td>
 
-      <p>
-        در صورت آماده بودن پرونده‌ها، تعداد پرونده را وارد و درخواست جمع‌آوری را ثبت کنید.
-      </p>
+<td>—</td>
 
-      <input
-        type="number"
-        id="schoolFiles"
-        placeholder="تعداد پرونده"
-        min="1"
-      >
+<td>30</td>
 
-      <button onclick="schoolReady()">
-        📦 اعلام آماده بودن
-      </button>
+<td>
+<span class="status status-ready">
+آماده جمع‌آوری
+</span>
+</td>
 
-      <div id="schoolResult"></div>
+<td>
+<button class="btn" onclick="showDetails('آینده',50,0,'—',30)">
+مشاهده
+</button>
+</td>
 
-    </div>
+</tr>
 
 
-    <div class="card">
+<tr>
 
-      <h3>📋 وضعیت درخواست</h3>
+<td>آموزشگاه امید</td>
 
-      <div id="schoolStatus">
-        هنوز درخواستی ثبت نشده است.
-      </div>
+<td>38</td>
 
-    </div>
+<td>35</td>
 
-  </section>
+<td>12:05</td>
+
+<td>15</td>
+
+<td>
+<span class="status status-danger">
+مغایرت
+</span>
+</td>
+
+<td>
+<button class="btn" onclick="showDetails('امید',38,35,'12:05',15)">
+مشاهده
+</button>
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧾 مدیریت قبض‌های پستی</h3>
+
+<p>
+مدیر می‌تواند تعداد قبض ارسالی برای هر آموزشگاه را ثبت کند.
+</p>
+
+
+<div class="grid">
+
+<div>
+
+<label>انتخاب آموزشگاه</label>
+
+<select id="invoiceSchool">
+
+<option>آموزشگاه فرهنگ</option>
+<option>آموزشگاه دانش</option>
+<option>آموزشگاه آینده</option>
+<option>آموزشگاه امید</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>تعداد قبض ارسالی</label>
+
+<input
+type="number"
+id="invoiceCount"
+placeholder="مثلاً 20"
+>
+
+</div>
+
+</div>
+
+
+<button class="btn" onclick="registerInvoices()">
+ثبت تعداد قبض ارسالی
+</button>
+
+<div id="invoiceResult"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📈 وضعیت جمع‌آورنده‌ها</h3>
+
+
+<div class="grid">
+
+
+<div class="item">
+
+<div class="item-title">
+جمع‌آورنده ۱
+</div>
+
+تعداد مأموریت: 8
+<br>
+انجام شده: 5
+<br>
+باقی‌مانده: 3
+
+<br>
+
+<span class="status status-ready">
+در حال فعالیت
+</span>
+
+</div>
+
+
+<div class="item">
+
+<div class="item-title">
+جمع‌آورنده ۲
+</div>
+
+تعداد مأموریت: 7
+<br>
+انجام شده: 7
+<br>
+باقی‌مانده: 0
+
+<br>
+
+<span class="status status-done">
+ماموریت تکمیل شد
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- COLLECTOR -->
+<!-- ================================================= -->
+
+<section id="collectorPanel" class="hidden">
+
+
+<div class="stats">
+
+<div class="stat">
+مأموریت امروز
+<div class="stat-number">8</div>
+</div>
+
+<div class="stat">
+انجام‌شده
+<div class="stat-number">5</div>
+</div>
+
+<div class="stat">
+باقی‌مانده
+<div class="stat-number">3</div>
+</div>
+
+<div class="stat">
+پرونده
+<div class="stat-number">120</div>
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="card">
+
+<h3>🚚 مأموریت‌های امروز</h3>
+
+
+<div class="item">
+
+<div class="item-title">
+۱. آموزشگاه فرهنگ
+</div>
+
+تعداد اعلام‌شده توسط آموزشگاه:
+<strong>45 پرونده</strong>
+
+<br>
+
+تعداد قبض:
+<strong>20 عدد</strong>
+
+<br>
+
+آدرس:
+خیابان نمونه، پلاک ۱۲
+
+<br>
+
+<span class="status status-ready">
+آماده جمع‌آوری
+</span>
+
+
+<button class="btn" onclick="arrival('culture')">
+📍 ثبت زمان دقیق مراجعه
+</button>
+
+
+<label>
+تعداد واقعی پرونده تحویل‌گرفته‌شده
+</label>
+
+<input
+type="number"
+id="cultureFiles"
+value="43"
+min="0"
+>
+
+<button class="btn-orange btn" onclick="editCollection('culture')">
+✏️ اصلاح / ثبت تعداد دریافتی
+</button>
+
+
+<button class="btn-green btn" onclick="finishCollection('culture')">
+✅ ثبت نهایی جمع‌آوری
+</button>
+
+
+<button class="btn btn-gray" onclick="invoiceDelivered('culture')">
+🧾 قبض تحویل شد
+</button>
+
+
+<div id="cultureResult"></div>
+
+</div>
+
+
+<div class="item">
+
+<div class="item-title">
+۲. آموزشگاه دانش
+</div>
+
+تعداد اعلام‌شده:
+<strong>32 پرونده</strong>
+
+<br>
+
+تعداد قبض:
+<strong>0</strong>
+
+<br>
+
+آدرس:
+میدان اصلی، خیابان دوم
+
+<br>
+
+<span class="status status-ready">
+آماده جمع‌آوری
+</span>
+
+
+<button class="btn" onclick="arrival('danesh')">
+📍 ثبت زمان دقیق مراجعه
+</button>
+
+
+<label>
+تعداد واقعی پرونده دریافتی
+</label>
+
+<input
+type="number"
+id="daneshFiles"
+value="32"
+min="0"
+>
+
+<button class="btn-orange btn" onclick="editCollection('danesh')">
+✏️ اصلاح / ثبت تعداد دریافتی
+</button>
+
+
+<button class="btn-green btn" onclick="finishCollection('danesh')">
+✅ ثبت نهایی جمع‌آوری
+</button>
+
+
+<div id="daneshResult"></div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- SCHOOL -->
+<!-- ================================================= -->
+
+<section id="schoolPanel" class="hidden">
+
+
+<div class="card">
+
+<h3>🏫 آموزشگاه فرهنگ</h3>
+
+<div class="alert alert-success">
+
+پرونده‌های شما آماده جمع‌آوری هستند.
+
+<br>
+
+تعداد پرونده:
+<strong>45</strong>
+
+</div>
+
+<br>
+
+<h3>🚚 زمان تقریبی رسیدن جمع‌آوری</h3>
+
+<div class="alert alert-warning">
+
+جمع‌آورنده در حال حرکت است.
+
+<br>
+
+<strong style="font-size:20px;">
+حدود ۳۰ تا ۴۵ دقیقه دیگر
+</strong>
+
+<br>
+
+آخرین بروزرسانی: 10:05
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📦 درخواست جمع‌آوری پرونده</h3>
+
+تعداد پرونده آماده:
+
+<input
+type="number"
+id="schoolFileCount"
+value="45"
+>
+
+<button class="btn">
+ثبت / اصلاح تعداد پرونده
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧾 درخواست قبض پستی</h3>
+
+<p>
+تعداد قبض موردنیاز خود را وارد کنید.
+</p>
+
+<input
+type="number"
+id="schoolInvoiceCount"
+placeholder="مثلاً 20"
+min="1"
+>
+
+<button class="btn" onclick="requestInvoice()">
+ثبت درخواست قبض
+</button>
+
+<div id="schoolInvoiceResult"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>💳 پرداخت قبض</h3>
+
+<p>
+پس از ثبت درخواست، امکان انتقال به درگاه پرداخت فراهم می‌شود.
+</p>
+
+<button class="btn" onclick="payment()">
+انتقال به درگاه بانک
+</button>
+
+<div id="paymentResult"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📮 تأیید دریافت قبض</h3>
+
+<div class="alert alert-warning">
+
+با توجه به درخواست شما تعداد
+<strong id="invoiceDisplay">20</strong>
+قبض پستی به شما تحویل داده می‌شود.
+
+<br><br>
+
+در صورت دریافت قبض‌ها، گزینه زیر را تأیید کنید.
+
+</div>
+
+<button class="btn-green btn" onclick="confirmInvoice()">
+✅ قبض‌ها را دریافت کردم
+</button>
+
+<div id="confirmInvoiceResult"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📋 وضعیت درخواست</h3>
+
+<div class="item">
+
+پرونده‌ها:
+<span class="status status-ready">
+در انتظار جمع‌آوری
+</span>
+
+<br><br>
+
+قبض:
+<span class="status status-ready">
+در انتظار تحویل
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL -->
+<!-- ================================================= -->
+
+<div class="modal" id="detailModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal()">
+✕
+</button>
+
+<h3>جزئیات آموزشگاه</h3>
+
+<div id="detailContent"></div>
+
+</div>
 
 </div>
 
 
 <script>
 
-  /*
-   * اطلاعات آزمایشی ورود
-   *
-   * مدیر:
-   * admin / 123456
-   *
-   * جمع‌آورنده:
-   * collector / 123456
-   *
-   * آموزشگاه:
-   * school / 123456
-   */
+/* PANEL */
 
-  const users = {
-    admin: {
-      password: "123456",
-      name: "مدیر سیستم",
-      role: "manager"
-    },
+function showPanel(panel){
 
-    collector: {
-      password: "123456",
-      name: "جمع‌آورنده ۱",
-      role: "collector"
-    },
+document.getElementById("managerPanel").classList.add("hidden");
+document.getElementById("collectorPanel").classList.add("hidden");
+document.getElementById("schoolPanel").classList.add("hidden");
 
-    school: {
-      password: "123456",
-      name: "آموزشگاه فرهنگ",
-      role: "school"
-    }
-  };
+document.getElementById("navManager").classList.remove("active");
+document.getElementById("navCollector").classList.remove("active");
+document.getElementById("navSchool").classList.remove("active");
 
+if(panel==="manager"){
 
-  // بررسی ورود
+document.getElementById("managerPanel").classList.remove("hidden");
+document.getElementById("navManager").classList.add("active");
 
-  const currentUser =
-    localStorage.getItem("boxitUser");
+}
 
-  if (!currentUser) {
+if(panel==="collector"){
 
-    window.location.href = "index.html";
+document.getElementById("collectorPanel").classList.remove("hidden");
+document.getElementById("navCollector").classList.add("active");
 
-  } else {
+}
 
-    const user = users[currentUser];
+if(panel==="school"){
 
-    if (!user) {
+document.getElementById("schoolPanel").classList.remove("hidden");
+document.getElementById("navSchool").classList.add("active");
 
-      localStorage.removeItem("boxitUser");
-      window.location.href = "index.html";
+}
 
-    } else {
+}
 
-      document.getElementById("userName").innerText =
-        user.name;
 
-      if (user.role === "manager") {
+/* ARRIVAL */
 
-        document.getElementById("userRole").innerText =
-          "سطح دسترسی: مدیر";
+function arrival(type){
 
-        document.getElementById("managerPanel")
-          .classList.remove("hidden");
+let result =
+document.getElementById(type+"Result");
 
-      }
+let time =
+new Date().toLocaleTimeString("fa-IR");
 
-      if (user.role === "collector") {
+result.innerHTML =
+'<div class="alert alert-success">' +
+'📍 زمان دقیق مراجعه ثبت شد: <strong>' +
+time +
+'</strong></div>';
 
-        document.getElementById("userRole").innerText =
-          "سطح دسترسی: جمع‌آورنده";
+}
 
-        document.getElementById("collectorPanel")
-          .classList.remove("hidden");
 
-      }
+/* EDIT COLLECTION */
 
-      if (user.role === "school") {
+function editCollection(type){
 
-        document.getElementById("userRole").innerText =
-          "سطح دسترسی: آموزشگاه";
+let input =
+document.getElementById(type+"Files");
 
-        document.getElementById("schoolPanel")
-          .classList.remove("hidden");
+let result =
+document.getElementById(type+"Result");
 
-      }
+result.innerHTML =
+'<div class="alert alert-warning">' +
+'تعداد دریافتی اصلاح شد: <strong>' +
+input.value +
+' پرونده</strong>' +
+'</div>';
 
-    }
+}
 
-  }
 
+/* FINISH */
 
-  // خروج
+function finishCollection(type){
 
-  function logout() {
+let result =
+document.getElementById(type+"Result");
 
-    localStorage.removeItem("boxitUser");
+result.innerHTML =
+'<div class="alert alert-success">' +
+'✅ جمع‌آوری با موفقیت ثبت و نهایی شد.' +
+'</div>';
 
-    window.location.href = "index.html";
+}
 
-  }
 
+/* INVOICE DELIVERED */
 
-  // رسیدن جمع‌آورنده
+function invoiceDelivered(type){
 
-  function arrived(school) {
+let result =
+document.getElementById(type+"Result");
 
-    let result;
+result.innerHTML =
+'<div class="alert alert-success">' +
+'🧾 تحویل قبض ثبت شد.' +
+'</div>';
 
-    if (school === "فرهنگ") {
-      result = document.getElementById("cultureResult");
-    } else {
-      result = document.getElementById("daneshResult");
-    }
+}
 
-    const time =
-      new Date().toLocaleTimeString("fa-IR");
 
-    result.className = "success";
+/* MANAGER DETAILS */
 
-    result.innerText =
-      "📍 رسیدن به " + school +
-      " ثبت شد.\nزمان: " + time;
+function showDetails(name, announced, received, time, invoices){
 
-  }
+let difference =
+announced - received;
 
+document.getElementById("detailContent").innerHTML =
 
-  // ثبت جمع‌آوری
+"<h3>"+name+"</h3>" +
 
-  function collect(school) {
+"<p>تعداد پرونده اعلام‌شده: <strong>"+
+announced+
+"</strong></p>" +
 
-    let result;
+"<p>تعداد پرونده تحویل‌گرفته‌شده: <strong>"+
+received+
+"</strong></p>" +
 
-    if (school === "فرهنگ") {
-      result = document.getElementById("cultureResult");
-    } else {
-      result = document.getElementById("daneshResult");
-    }
+"<p>اختلاف: <strong>"+
+difference+
+"</strong></p>" +
 
-    const time =
-      new Date().toLocaleTimeString("fa-IR");
+"<p>زمان دقیق مراجعه: <strong>"+
+time+
+"</strong></p>" +
 
-    result.className = "success";
+"<p>تعداد قبض ارسالی: <strong>"+
+invoices+
+"</strong></p>";
 
-    result.innerText =
-      "✅ جمع‌آوری " + school +
-      " با موفقیت ثبت شد.\nزمان: " + time;
+document.getElementById("detailModal").style.display="flex";
 
-  }
+}
 
 
-  // اعلام آماده بودن آموزشگاه
+function closeModal(){
 
-  function schoolReady() {
+document.getElementById("detailModal").style.display="none";
 
-    const count =
-      document.getElementById("schoolFiles").value;
+}
 
-    const result =
-      document.getElementById("schoolResult");
 
-    const status =
-      document.getElementById("schoolStatus");
+/* MANAGER INVOICE */
 
-    if (!count || Number(count) <= 0) {
+function registerInvoices(){
 
-      result.className = "warning";
+let school =
+document.getElementById("invoiceSchool").value;
 
-      result.innerText =
-        "لطفاً تعداد پرونده را وارد کنید.";
+let count =
+document.getElementById("invoiceCount").value;
 
-      return;
+if(!count){
 
-    }
+alert("تعداد قبض را وارد کنید.");
 
-    const time =
-      new Date().toLocaleTimeString("fa-IR");
+return;
 
-    result.className = "success";
+}
 
-    result.innerText =
-      "✅ درخواست جمع‌آوری ثبت شد.";
+document.getElementById("invoiceResult").innerHTML =
 
-    status.innerHTML =
-      "<strong>وضعیت:</strong> آماده جمع‌آوری" +
-      "<br>" +
-      "تعداد پرونده: " + count +
-      "<br>" +
-      "زمان اعلام: " + time;
+'<div class="alert alert-success">' +
+'تعداد <strong>'+count+
+'</strong> قبض برای <strong>'+
+school+
+'</strong> ثبت شد.' +
+'</div>';
 
-    localStorage.setItem(
-      "schoolFiles",
-      count
-    );
+}
 
-    localStorage.setItem(
-      "schoolReadyTime",
-      time
-    );
 
-  }
+/* SCHOOL INVOICE */
+
+function requestInvoice(){
+
+let count =
+document.getElementById("schoolInvoiceCount").value;
+
+if(!count){
+
+alert("تعداد قبض را وارد کنید.");
+
+return;
+
+}
+
+document.getElementById("invoiceDisplay").innerText =
+count;
+
+document.getElementById("schoolInvoiceResult").innerHTML =
+
+'<div class="alert alert-success">' +
+'درخواست <strong>'+count+
+'</strong> قبض ثبت شد.' +
+'</div>';
+
+}
+
+
+/* PAYMENT */
+
+function payment(){
+
+document.getElementById("paymentResult").innerHTML =
+
+'<div class="alert alert-success">' +
+'💳 انتقال به درگاه بانک در نسخه نهایی انجام خواهد شد.' +
+'</div>';
+
+}
+
+
+/* CONFIRM INVOICE */
+
+function confirmInvoice(){
+
+document.getElementById("confirmInvoiceResult").innerHTML =
+
+'<div class="alert alert-success">' +
+'✅ دریافت قبض‌ها توسط آموزشگاه تأیید شد.' +
+'</div>';
+
+}
 
 </script>
 
