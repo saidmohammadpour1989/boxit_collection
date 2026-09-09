@@ -251,4 +251,1088 @@ input,select{
     }
 
     .logout{
-        position
+        position:static;
+        margin-top:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <button class="logout" onclick="logout()">خروج</button>
+    <h1>سامانه مدیریت عملیات جمع‌آوری باکسیت</h1>
+    <p id="userRole"></p>
+</div>
+
+<div class="container">
+
+<!-- ================= مدیریت ================= -->
+
+<section id="managerPanel">
+
+<div class="card">
+<h2>👨‍💼 پنل مدیریت</h2>
+
+<div class="stats">
+
+<div class="stat">
+تعداد آموزشگاه‌ها
+<strong id="totalSchools">200</strong>
+</div>
+
+<div class="stat">
+آماده جمع‌آوری
+<strong id="readySchools">0</strong>
+</div>
+
+<div class="stat">
+جمع‌آوری شده
+<strong id="collectedSchools">0</strong>
+</div>
+
+<div class="stat">
+تعداد کل پرونده‌ها
+<strong id="totalFiles">0</strong>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+
+<h2>📊 گزارش عملیات روزانه</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>آموزشگاه</th>
+<th>جمع‌آور</th>
+<th>تعداد اعلامی</th>
+<th>تعداد دریافتی</th>
+<th>زمان مراجعه</th>
+<th>قبض ارسال شده</th>
+<th>وضعیت</th>
+<th>جزئیات</th>
+</tr>
+</thead>
+
+<tbody id="operationsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🧾 مدیریت قبض‌ها</h2>
+
+<div class="form-grid">
+
+<div>
+<label>آموزشگاه</label>
+<select id="receiptSchool"></select>
+</div>
+
+<div>
+<label>تعداد قبض ارسال شده</label>
+<input type="number" id="receiptCount" min="0">
+</div>
+
+</div>
+
+<button class="btn btn-primary" onclick="saveReceipts()">
+ثبت تعداد قبض
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>⚙️ مدیریت دمو</h2>
+
+<button class="btn btn-danger" onclick="resetDemo()">
+بازنشانی اطلاعات دمو
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= جمع آور ================= -->
+
+<section id="collectorPanel">
+
+<div class="card">
+
+<h2>🚚 پنل جمع‌آوری</h2>
+
+<div class="stats">
+
+<div class="stat">
+ماموریت‌های امروز
+<strong id="collectorMissions">0</strong>
+</div>
+
+<div class="stat">
+جمع‌آوری شده
+<strong id="collectorCollected">0</strong>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📍 ماموریت‌های امروز</h2>
+
+<div id="collectorList"></div>
+
+</div>
+
+</section>
+
+
+<!-- ================= آموزشگاه ================= -->
+
+<section id="schoolPanel">
+
+<div class="card">
+
+<h2>🏫 پنل آموزشگاه</h2>
+
+<label>آموزشگاه</label>
+
+<select id="schoolSelector" onchange="renderSchoolPanel()"></select>
+
+<div id="schoolInfo"></div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ================= Modal ================= -->
+
+<div class="modal" id="detailsModal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">×</span>
+
+<h2>جزئیات آموزشگاه</h2>
+
+<div id="modalBody"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const STORAGE_KEY = "boxit_demo_v4";
+
+let currentUser = localStorage.getItem("boxitUser") || "";
+
+let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+
+schools:[
+
+{
+name:"فرهنگ",
+address:"تهران، خیابان ولیعصر",
+declaredFiles:45,
+receivedFiles:43,
+ready:true,
+arrivalTime:"",
+collected:false,
+eta:35,
+collector:"علی رضایی",
+receiptRequested:20,
+receiptSent:20,
+receiptDelivered:false
+},
+
+{
+name:"دانش",
+address:"تهران، میدان انقلاب",
+declaredFiles:32,
+receivedFiles:32,
+ready:true,
+arrivalTime:"11:15",
+collected:true,
+eta:15,
+collector:"محمد کریمی",
+receiptRequested:0,
+receiptSent:0,
+receiptDelivered:false
+},
+
+{
+name:"آینده",
+address:"تهران، خیابان آزادی",
+declaredFiles:50,
+receivedFiles:0,
+ready:true,
+arrivalTime:"",
+collected:false,
+eta:45,
+collector:"علی رضایی",
+receiptRequested:30,
+receiptSent:0,
+receiptDelivered:false
+},
+
+{
+name:"امید",
+address:"تهران، خیابان شریعتی",
+declaredFiles:38,
+receivedFiles:35,
+ready:true,
+arrivalTime:"12:05",
+collected:false,
+eta:20,
+collector:"محمد کریمی",
+receiptRequested:15,
+receiptSent:15,
+receiptDelivered:false
+},
+
+{
+name:"پیام",
+address:"تهران، نارمک",
+declaredFiles:27,
+receivedFiles:0,
+ready:false,
+arrivalTime:"",
+collected:false,
+eta:60,
+collector:"علی رضایی",
+receiptRequested:0,
+receiptSent:0,
+receiptDelivered:false
+}
+
+]
+
+};
+
+
+/* ================= ذخیره ================= */
+
+function saveData(){
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(data)
+);
+
+}
+
+
+/* ================= نقش کاربر ================= */
+
+function setupRole(){
+
+const manager=document.getElementById("managerPanel");
+const collector=document.getElementById("collectorPanel");
+const school=document.getElementById("schoolPanel");
+
+manager.style.display="none";
+collector.style.display="none";
+school.style.display="none";
+
+if(currentUser==="admin"){
+
+manager.style.display="block";
+
+document.getElementById("userRole").innerText=
+"کاربر: مدیر سیستم";
+
+renderManager();
+
+}
+
+else if(currentUser==="collector"){
+
+collector.style.display="block";
+
+document.getElementById("userRole").innerText=
+"کاربر: جمع‌آور";
+
+renderCollector();
+
+}
+
+else if(currentUser==="school"){
+
+school.style.display="block";
+
+document.getElementById("userRole").innerText=
+"کاربر: آموزشگاه";
+
+populateSchoolSelector();
+
+renderSchoolPanel();
+
+}
+
+else{
+
+window.location.href="index.html";
+
+}
+
+}
+
+
+/* ================= مدیریت ================= */
+
+function renderManager(){
+
+let ready=0;
+let collected=0;
+let files=0;
+
+data.schools.forEach(s=>{
+
+if(s.ready) ready++;
+
+if(s.collected) collected++;
+
+files+=Number(s.declaredFiles)||0;
+
+});
+
+document.getElementById("totalSchools").innerText=200;
+
+document.getElementById("readySchools").innerText=ready;
+
+document.getElementById("collectedSchools").innerText=collected;
+
+document.getElementById("totalFiles").innerText=files;
+
+
+let tbody=document.getElementById("operationsTable");
+
+tbody.innerHTML="";
+
+data.schools.forEach((s,index)=>{
+
+let status="در انتظار";
+
+let cls="badge-orange";
+
+if(s.collected){
+
+status="جمع‌آوری شده";
+
+cls="badge-green";
+
+}
+else if(s.arrivalTime){
+
+status="مراجعه انجام شده";
+
+cls="badge-green";
+
+}
+else if(s.ready){
+
+status="آماده جمع‌آوری";
+
+cls="badge-orange";
+
+}
+else{
+
+status="آماده نیست";
+
+cls="badge-red";
+
+}
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td>${s.name}</td>
+
+<td>${s.collector || "-"}</td>
+
+<td>${s.declaredFiles}</td>
+
+<td>${s.receivedFiles}</td>
+
+<td>${s.arrivalTime || "-"}</td>
+
+<td>${s.receiptSent || 0}</td>
+
+<td>
+<span class="badge ${cls}">
+${status}
+</span>
+</td>
+
+<td>
+<button class="btn btn-secondary"
+onclick="showDetails(${index})">
+مشاهده
+</button>
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+let select=document.getElementById("receiptSchool");
+
+select.innerHTML="";
+
+data.schools.forEach((s,i)=>{
+
+select.innerHTML+=`
+<option value="${i}">
+${s.name}
+</option>
+`;
+
+});
+
+}
+
+
+/* ================= جزئیات ================= */
+
+function showDetails(index){
+
+const s=data.schools[index];
+
+document.getElementById("modalBody").innerHTML=`
+
+<div class="info">
+
+<strong>آموزشگاه:</strong>
+${s.name}
+
+<br><br>
+
+<strong>آدرس:</strong>
+${s.address}
+
+</div>
+
+<p>
+<strong>جمع‌آور:</strong>
+${s.collector || "-"}
+</p>
+
+<p>
+<strong>تعداد اعلامی:</strong>
+${s.declaredFiles}
+</p>
+
+<p>
+<strong>تعداد دریافتی:</strong>
+${s.receivedFiles}
+</p>
+
+<p>
+<strong>اختلاف:</strong>
+${Number(s.declaredFiles)-Number(s.receivedFiles)}
+</p>
+
+<p>
+<strong>زمان دقیق مراجعه:</strong>
+${s.arrivalTime || "هنوز مراجعه نشده"}
+</p>
+
+<p>
+<strong>زمان تقریبی مراجعه:</strong>
+${s.arrivalTime ? "-" : s.eta+" دقیقه دیگر"}
+</p>
+
+<p>
+<strong>تعداد قبض درخواستی:</strong>
+${s.receiptRequested || 0}
+</p>
+
+<p>
+<strong>تعداد قبض ارسال شده:</strong>
+${s.receiptSent || 0}
+</p>
+
+<p>
+<strong>وضعیت دریافت قبض:</strong>
+${s.receiptDelivered ? "دریافت شده" : "دریافت نشده"}
+</p>
+
+`;
+
+document.getElementById("detailsModal").style.display="flex";
+
+}
+
+
+function closeModal(){
+
+document.getElementById("detailsModal").style.display="none";
+
+}
+
+
+/* ================= قبض مدیریت ================= */
+
+function saveReceipts(){
+
+let index=
+Number(document.getElementById("receiptSchool").value);
+
+let count=
+Number(document.getElementById("receiptCount").value)||0;
+
+data.schools[index].receiptSent=count;
+
+saveData();
+
+alert("تعداد قبض با موفقیت ثبت شد.");
+
+renderManager();
+
+}
+
+
+/* ================= جمع آور ================= */
+
+function renderCollector(){
+
+let list=document.getElementById("collectorList");
+
+list.innerHTML="";
+
+let missions=0;
+let collected=0;
+
+data.schools.forEach((s,index)=>{
+
+if(!s.ready) return;
+
+missions++;
+
+if(s.collected) collected++;
+
+let arrivalInfo="";
+
+if(s.arrivalTime){
+
+arrivalInfo=`
+<div class="success-box">
+زمان مراجعه ثبت شده:
+<strong>${s.arrivalTime}</strong>
+</div>
+`;
+
+}
+else{
+
+arrivalInfo=`
+<div class="info">
+زمان تقریبی مراجعه:
+<strong>${s.eta} دقیقه دیگر</strong>
+</div>
+`;
+
+}
+
+let receiptBox="";
+
+if(s.receiptSent>0){
+
+receiptBox=`
+
+<div class="info">
+
+🧾 تعداد قبض تحویلی:
+<strong>${s.receiptSent}</strong>
+
+<br><br>
+
+${
+s.receiptDelivered
+?
+"✅ آموزشگاه قبض‌ها را دریافت کرده است."
+:
+`
+<button class="btn btn-success"
+onclick="deliverReceipts(${index})">
+قبض تحویل شد
+</button>
+`
+}
+
+</div>
+
+`;
+
+}
+
+list.innerHTML+=`
+
+<div class="school-card">
+
+<h3>🏫 ${s.name}</h3>
+
+<p>
+📍 ${s.address}
+</p>
+
+<p>
+تعداد اعلامی:
+<strong>${s.declaredFiles}</strong>
+</p>
+
+<p>
+تعداد دریافتی:
+<strong>${s.receivedFiles}</strong>
+</p>
+
+${arrivalInfo}
+
+<div class="form-grid">
+
+<div>
+
+<label>تعداد واقعی دریافتی</label>
+
+<input
+type="number"
+id="received_${index}"
+value="${s.receivedFiles}"
+min="0">
+
+<button class="btn btn-secondary"
+onclick="saveReceived(${index})">
+ثبت تعداد
+</button>
+
+</div>
+
+</div>
+
+
+${
+!s.arrivalTime
+?
+`
+<button class="btn btn-primary"
+onclick="registerArrival(${index})">
+📍 ثبت ورود به آموزشگاه
+</button>
+`
+:
+`
+<button class="btn btn-success"
+onclick="finishCollection(${index})">
+📦 ثبت نهایی جمع‌آوری
+</button>
+`
+}
+
+${receiptBox}
+
+</div>
+
+`;
+
+});
+
+document.getElementById("collectorMissions").innerText=missions;
+
+document.getElementById("collectorCollected").innerText=collected;
+
+}
+
+
+/* ================= ثبت ورود ================= */
+
+function registerArrival(index){
+
+const now=new Date();
+
+const time=
+String(now.getHours()).padStart(2,"0")
++
+":"
++
+String(now.getMinutes()).padStart(2,"0");
+
+data.schools[index].arrivalTime=time;
+
+saveData();
+
+alert("زمان ورود ثبت شد: "+time);
+
+renderCollector();
+
+}
+
+
+/* ================= تعداد دریافتی ================= */
+
+function saveReceived(index){
+
+const value=
+Number(document.getElementById("received_"+index).value)||0;
+
+data.schools[index].receivedFiles=value;
+
+saveData();
+
+alert("تعداد واقعی پرونده‌ها ثبت شد.");
+
+renderCollector();
+
+}
+
+
+/* ================= جمع آوری نهایی ================= */
+
+function finishCollection(index){
+
+if(!data.schools[index].arrivalTime){
+
+alert("ابتدا ورود به آموزشگاه را ثبت کنید.");
+
+return;
+
+}
+
+data.schools[index].collected=true;
+
+saveData();
+
+alert("جمع‌آوری با موفقیت ثبت شد.");
+
+renderCollector();
+
+}
+
+
+/* ================= تحویل قبض ================= */
+
+function deliverReceipts(index){
+
+data.schools[index].receiptDelivered=true;
+
+saveData();
+
+alert("تحویل قبض ثبت شد.");
+
+renderCollector();
+
+}
+
+
+/* ================= آموزشگاه ================= */
+
+function populateSchoolSelector(){
+
+let select=
+document.getElementById("schoolSelector");
+
+select.innerHTML="";
+
+data.schools.forEach((s,i)=>{
+
+select.innerHTML+=`
+
+<option value="${i}">
+${s.name}
+</option>
+
+`;
+
+});
+
+}
+
+
+/* ================= پنل آموزشگاه ================= */
+
+function renderSchoolPanel(){
+
+let index=
+Number(document.getElementById("schoolSelector").value)||0;
+
+let s=data.schools[index];
+
+let arrival="";
+
+if(s.arrivalTime){
+
+arrival=`
+
+<div class="success-box">
+
+🚚 جمع‌آور به آموزشگاه مراجعه کرده است.
+
+<br>
+
+زمان مراجعه:
+<strong>${s.arrivalTime}</strong>
+
+</div>
+
+`;
+
+}
+else{
+
+arrival=`
+
+<div class="info">
+
+🚚 زمان تقریبی رسیدن جمع‌آور:
+
+<strong>${s.eta} دقیقه دیگر</strong>
+
+</div>
+
+`;
+
+}
+
+
+let receiptStatus="";
+
+if(s.receiptRequested>0){
+
+receiptStatus+=`
+
+<div class="info">
+
+🧾 تعداد قبض درخواستی:
+
+<strong>${s.receiptRequested}</strong>
+
+</div>
+
+`;
+
+}
+
+
+if(s.receiptSent>0){
+
+receiptStatus+=`
+
+<div class="success-box">
+
+با توجه به درخواست شما تعداد
+
+<strong>${s.receiptSent}</strong>
+
+قبض پستی به شما تحویل داده می‌شود.
+
+<br><br>
+
+${
+s.receiptDelivered
+?
+"✅ دریافت قبض‌ها تأیید شده است."
+:
+`
+<button class="btn btn-success"
+onclick="confirmSchoolReceipt(${index})">
+قبض‌ها را دریافت کردم
+</button>
+`
+}
+
+</div>
+
+`;
+
+}
+
+
+document.getElementById("schoolInfo").innerHTML=`
+
+<div class="school-card">
+
+<h3>🏫 ${s.name}</h3>
+
+<p>
+📍 آدرس:
+${s.address}
+</p>
+
+<p>
+📁 تعداد پرونده اعلام شده:
+<strong>${s.declaredFiles}</strong>
+</p>
+
+<p>
+📦 تعداد پرونده تحویل شده:
+<strong>${s.receivedFiles}</strong>
+</p>
+
+${arrival}
+
+<hr>
+
+<h3>🧾 ثبت درخواست قبض و پرداخت</h3>
+
+<div class="info">
+
+در این بخش تعداد قبض مورد نیاز خود را ثبت کرده و سپس وارد مرحله پرداخت شوید.
+
+</div>
+
+<label>تعداد قبض مورد نیاز</label>
+
+<input
+type="number"
+id="schoolReceiptCount"
+value="${s.receiptRequested || 0}"
+min="0">
+
+<button class="btn btn-primary"
+onclick="requestReceiptAndPayment(${index})">
+
+🧾 ثبت درخواست قبض و پرداخت
+
+</button>
+
+${receiptStatus}
+
+</div>
+
+`;
+
+}
+
+
+/* ================= درخواست قبض + پرداخت ================= */
+
+function requestReceiptAndPayment(index){
+
+const count=
+Number(document.getElementById("schoolReceiptCount").value)||0;
+
+if(count<=0){
+
+alert("لطفاً تعداد قبض مورد نیاز را وارد کنید.");
+
+return;
+
+}
+
+data.schools[index].receiptRequested=count;
+
+saveData();
+
+alert(
+"درخواست "+count+
+" قبض ثبت شد.\n\nدر نسخه واقعی، در مرحله بعد به درگاه بانکی منتقل می‌شوید."
+);
+
+simulatePayment(index);
+
+}
+
+
+/* ================= پرداخت دمو ================= */
+
+function simulatePayment(index){
+
+let confirmPayment=
+confirm(
+"درگاه پرداخت دمو\n\n"+
+"مبلغ قابل پرداخت بر اساس تعداد قبض محاسبه خواهد شد.\n\n"+
+"آیا پرداخت را ادامه می‌دهید؟"
+);
+
+if(!confirmPayment){
+
+return;
+
+}
+
+alert(
+"پرداخت آزمایشی با موفقیت انجام شد.\n\n"+
+"در نسخه واقعی این مرحله به درگاه بانکی متصل خواهد شد."
+);
+
+renderSchoolPanel();
+
+}
+
+
+/* ================= تأیید دریافت قبض ================= */
+
+function confirmSchoolReceipt(index){
+
+data.schools[index].receiptDelivered=true;
+
+saveData();
+
+alert("دریافت قبض‌ها ثبت شد.");
+
+renderSchoolPanel();
+
+}
+
+
+/* ================= بازنشانی ================= */
+
+function resetDemo(){
+
+if(!confirm(
+"آیا مطمئن هستید که اطلاعات دمو بازنشانی شود؟"
+)){
+
+return;
+
+}
+
+localStorage.removeItem(STORAGE_KEY);
+
+location.reload();
+
+}
+
+
+/* ================= خروج ================= */
+
+function logout(){
+
+localStorage.removeItem("boxitUser");
+
+window.location.href="index.html";
+
+}
+
+
+/* ================= شروع ================= */
+
+setupRole();
+
+</script>
+
+</body>
+</html>
