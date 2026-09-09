@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>داشبورد - Boxit Collection</title>
+  <title>BOXIT Collection</title>
 
   <style>
     * {
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Tahoma, sans-serif;
     }
 
     body {
@@ -25,21 +25,24 @@
     }
 
     header h2 {
-      margin: 0;
+      margin: 0 0 5px;
     }
 
     .container {
-      width: 92%;
-      max-width: 700px;
+      width: 94%;
+      max-width: 850px;
       margin: 20px auto;
     }
 
-    .welcome {
+    .user-bar {
       background: white;
-      padding: 18px;
-      border-radius: 15px;
+      padding: 15px;
+      border-radius: 14px;
       margin-bottom: 15px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
     }
 
     .card {
@@ -47,14 +50,14 @@
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 15px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
     }
 
     .card h3 {
       margin-top: 0;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 13px;
       margin: 7px 0;
@@ -72,18 +75,89 @@
       color: white;
       font-size: 16px;
       margin-top: 8px;
+      cursor: pointer;
     }
 
-    .logout {
+    button.secondary {
+      background: #666;
+    }
+
+    button.danger {
       background: #b00020;
     }
 
-    #result {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      background: #f1f1f1;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: #f8f8f8;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-top: 8px;
+    }
+
+    .status {
+      padding: 7px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 13px;
+    }
+
+    .ready {
+      background: #fff3cd;
+    }
+
+    .collected {
+      background: #d4edda;
+    }
+
+    .waiting {
+      background: #e2e3e5;
+    }
+
+    .item {
+      border: 1px solid #eee;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .hidden {
       display: none;
+    }
+
+    .success {
+      background: #d4edda;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 10px;
+    }
+
+    .warning {
+      background: #fff3cd;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .user-bar {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -92,80 +166,470 @@
 
 <header>
   <h2>BOXIT</h2>
-  <div>سامانه جمع‌آوری آموزشگاه‌ها</div>
+  <div>سامانه مدیریت و جمع‌آوری آموزشگاه‌ها</div>
 </header>
 
 <div class="container">
 
-  <div class="welcome">
-    <h3>خوش آمدید 👋</h3>
-    <p>آموزشگاه می‌تواند وضعیت پرونده‌های خود را ثبت کند.</p>
-  </div>
+  <!-- اطلاعات کاربر -->
+  <div class="user-bar">
+    <div>
+      کاربر:
+      <strong id="userName"></strong>
+      <br>
+      <small id="userRole"></small>
+    </div>
 
-  <div class="card">
-    <h3>📁 اعلام آماده بودن پرونده</h3>
-
-    <input
-      type="number"
-      id="fileCount"
-      placeholder="تعداد پرونده آماده"
-      min="0"
-    >
-
-    <button onclick="registerFiles()">
-      اعلام آماده بودن
+    <button class="danger" onclick="logout()" style="width:auto;padding:9px 18px;">
+      خروج
     </button>
-
-    <div id="result"></div>
   </div>
 
-  <div class="card">
-    <h3>🚚 وضعیت جمع‌آوری</h3>
-    <p id="collectionStatus">
-      هنوز جمع‌آوری ثبت نشده است.
-    </p>
-  </div>
 
-  <button class="logout" onclick="logout()">
-    خروج از حساب
-  </button>
+  <!-- ================= مدیر ================= -->
+
+  <section id="managerPanel" class="hidden">
+
+    <div class="card">
+      <h3>📊 داشبورد مدیریت</h3>
+
+      <div class="stats">
+
+        <div class="stat">
+          آموزشگاه‌ها
+          <strong id="schoolCount">200</strong>
+        </div>
+
+        <div class="stat">
+          آماده جمع‌آوری
+          <strong id="readyCount">3</strong>
+        </div>
+
+        <div class="stat">
+          جمع‌آوری‌شده
+          <strong id="collectedCount">1</strong>
+        </div>
+
+        <div class="stat">
+          پرونده‌های امروز
+          <strong id="fileCountManager">120</strong>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="card">
+
+      <h3>📋 وضعیت آموزشگاه‌ها</h3>
+
+      <div class="item">
+        <strong>آموزشگاه فرهنگ</strong>
+        <br>
+        تعداد پرونده: 45
+        <br>
+        زمان اعلام: 08:30
+        <br><br>
+        <span class="status ready">آماده جمع‌آوری</span>
+      </div>
+
+      <div class="item">
+        <strong>آموزشگاه دانش</strong>
+        <br>
+        تعداد پرونده: 32
+        <br>
+        زمان جمع‌آوری: 10:15
+        <br><br>
+        <span class="status collected">جمع‌آوری شد</span>
+      </div>
+
+      <div class="item">
+        <strong>آموزشگاه آینده</strong>
+        <br>
+        تعداد پرونده: 43
+        <br><br>
+        <span class="status waiting">در انتظار اعلام</span>
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>🚚 وضعیت جمع‌آورنده‌ها</h3>
+
+      <div class="item">
+        <strong>جمع‌آورنده ۱</strong>
+        <br>
+        آموزشگاه‌های امروز: 8
+        <br>
+        جمع‌آوری‌شده: 5
+        <br>
+        باقی‌مانده: 3
+        <br><br>
+        <span class="status ready">در حال فعالیت</span>
+      </div>
+
+      <div class="item">
+        <strong>جمع‌آورنده ۲</strong>
+        <br>
+        آموزشگاه‌های امروز: 7
+        <br>
+        جمع‌آوری‌شده: 7
+        <br><br>
+        <span class="status collected">ماموریت تکمیل شد</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= جمع‌آورنده ================= -->
+
+  <section id="collectorPanel" class="hidden">
+
+    <div class="card">
+      <h3>🚚 مأموریت‌های امروز</h3>
+
+      <div class="item">
+
+        <strong>۱. آموزشگاه فرهنگ</strong>
+
+        <br>
+        تعداد پرونده آماده: 45
+
+        <br>
+        آدرس: خیابان نمونه، پلاک ۱۲
+
+        <br><br>
+
+        <span class="status ready">
+          آماده جمع‌آوری
+        </span>
+
+        <button onclick="arrived('فرهنگ')">
+          📍 رسیدم به آموزشگاه
+        </button>
+
+        <button class="secondary" onclick="collect('فرهنگ')">
+          📦 ثبت جمع‌آوری
+        </button>
+
+        <div id="cultureResult"></div>
+
+      </div>
+
+
+      <div class="item">
+
+        <strong>۲. آموزشگاه دانش</strong>
+
+        <br>
+        تعداد پرونده آماده: 32
+
+        <br>
+        آدرس: میدان اصلی، خیابان دوم
+
+        <br><br>
+
+        <span class="status ready">
+          آماده جمع‌آوری
+        </span>
+
+        <button onclick="arrived('دانش')">
+          📍 رسیدم به آموزشگاه
+        </button>
+
+        <button class="secondary" onclick="collect('دانش')">
+          📦 ثبت جمع‌آوری
+        </button>
+
+        <div id="daneshResult"></div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>📊 عملکرد امروز</h3>
+
+      <div class="stats">
+
+        <div class="stat">
+          مأموریت‌ها
+          <strong>8</strong>
+        </div>
+
+        <div class="stat">
+          انجام‌شده
+          <strong>5</strong>
+        </div>
+
+        <div class="stat">
+          باقی‌مانده
+          <strong>3</strong>
+        </div>
+
+        <div class="stat">
+          پرونده
+          <strong>120</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= آموزشگاه ================= -->
+
+  <section id="schoolPanel" class="hidden">
+
+    <div class="card">
+
+      <h3>🏫 اعلام آماده بودن پرونده‌ها</h3>
+
+      <p>
+        در صورت آماده بودن پرونده‌ها، تعداد پرونده را وارد و درخواست جمع‌آوری را ثبت کنید.
+      </p>
+
+      <input
+        type="number"
+        id="schoolFiles"
+        placeholder="تعداد پرونده"
+        min="1"
+      >
+
+      <button onclick="schoolReady()">
+        📦 اعلام آماده بودن
+      </button>
+
+      <div id="schoolResult"></div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>📋 وضعیت درخواست</h3>
+
+      <div id="schoolStatus">
+        هنوز درخواستی ثبت نشده است.
+      </div>
+
+    </div>
+
+  </section>
 
 </div>
 
+
 <script>
 
+  /*
+   * اطلاعات آزمایشی ورود
+   *
+   * مدیر:
+   * admin / 123456
+   *
+   * جمع‌آورنده:
+   * collector / 123456
+   *
+   * آموزشگاه:
+   * school / 123456
+   */
+
+  const users = {
+    admin: {
+      password: "123456",
+      name: "مدیر سیستم",
+      role: "manager"
+    },
+
+    collector: {
+      password: "123456",
+      name: "جمع‌آورنده ۱",
+      role: "collector"
+    },
+
+    school: {
+      password: "123456",
+      name: "آموزشگاه فرهنگ",
+      role: "school"
+    }
+  };
+
+
   // بررسی ورود
-  if (localStorage.getItem("loggedIn") !== "true") {
+
+  const currentUser =
+    localStorage.getItem("boxitUser");
+
+  if (!currentUser) {
+
     window.location.href = "index.html";
-  }
 
-  function registerFiles() {
+  } else {
 
-    const count = document.getElementById("fileCount").value;
-    const result = document.getElementById("result");
+    const user = users[currentUser];
 
-    if (count === "" || Number(count) < 0) {
-      result.style.display = "block";
-      result.innerText = "لطفاً تعداد پرونده را وارد کنید.";
-      return;
+    if (!user) {
+
+      localStorage.removeItem("boxitUser");
+      window.location.href = "index.html";
+
+    } else {
+
+      document.getElementById("userName").innerText =
+        user.name;
+
+      if (user.role === "manager") {
+
+        document.getElementById("userRole").innerText =
+          "سطح دسترسی: مدیر";
+
+        document.getElementById("managerPanel")
+          .classList.remove("hidden");
+
+      }
+
+      if (user.role === "collector") {
+
+        document.getElementById("userRole").innerText =
+          "سطح دسترسی: جمع‌آورنده";
+
+        document.getElementById("collectorPanel")
+          .classList.remove("hidden");
+
+      }
+
+      if (user.role === "school") {
+
+        document.getElementById("userRole").innerText =
+          "سطح دسترسی: آموزشگاه";
+
+        document.getElementById("schoolPanel")
+          .classList.remove("hidden");
+
+      }
+
     }
 
-    const time = new Date().toLocaleString("fa-IR");
-
-    localStorage.setItem("fileCount", count);
-    localStorage.setItem("readyTime", time);
-
-    result.style.display = "block";
-    result.innerText =
-      "تعداد " + count + " پرونده با موفقیت اعلام شد.\nزمان ثبت: " + time;
-
-    document.getElementById("collectionStatus").innerText =
-      "پرونده‌ها آماده جمع‌آوری هستند.\nزمان اعلام: " + time;
   }
 
+
+  // خروج
+
   function logout() {
-    localStorage.removeItem("loggedIn");
+
+    localStorage.removeItem("boxitUser");
+
     window.location.href = "index.html";
+
+  }
+
+
+  // رسیدن جمع‌آورنده
+
+  function arrived(school) {
+
+    let result;
+
+    if (school === "فرهنگ") {
+      result = document.getElementById("cultureResult");
+    } else {
+      result = document.getElementById("daneshResult");
+    }
+
+    const time =
+      new Date().toLocaleTimeString("fa-IR");
+
+    result.className = "success";
+
+    result.innerText =
+      "📍 رسیدن به " + school +
+      " ثبت شد.\nزمان: " + time;
+
+  }
+
+
+  // ثبت جمع‌آوری
+
+  function collect(school) {
+
+    let result;
+
+    if (school === "فرهنگ") {
+      result = document.getElementById("cultureResult");
+    } else {
+      result = document.getElementById("daneshResult");
+    }
+
+    const time =
+      new Date().toLocaleTimeString("fa-IR");
+
+    result.className = "success";
+
+    result.innerText =
+      "✅ جمع‌آوری " + school +
+      " با موفقیت ثبت شد.\nزمان: " + time;
+
+  }
+
+
+  // اعلام آماده بودن آموزشگاه
+
+  function schoolReady() {
+
+    const count =
+      document.getElementById("schoolFiles").value;
+
+    const result =
+      document.getElementById("schoolResult");
+
+    const status =
+      document.getElementById("schoolStatus");
+
+    if (!count || Number(count) <= 0) {
+
+      result.className = "warning";
+
+      result.innerText =
+        "لطفاً تعداد پرونده را وارد کنید.";
+
+      return;
+
+    }
+
+    const time =
+      new Date().toLocaleTimeString("fa-IR");
+
+    result.className = "success";
+
+    result.innerText =
+      "✅ درخواست جمع‌آوری ثبت شد.";
+
+    status.innerHTML =
+      "<strong>وضعیت:</strong> آماده جمع‌آوری" +
+      "<br>" +
+      "تعداد پرونده: " + count +
+      "<br>" +
+      "زمان اعلام: " + time;
+
+    localStorage.setItem(
+      "schoolFiles",
+      count
+    );
+
+    localStorage.setItem(
+      "schoolReadyTime",
+      time
+    );
+
   }
 
 </script>
