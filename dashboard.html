@@ -40,6 +40,7 @@ body{
     border:0;
     border-radius:7px;
     padding:8px 12px;
+    cursor:pointer;
 }
 
 .container{
@@ -213,18 +214,25 @@ th{
 <body>
 
 <div class="header">
-    <button class="logout" onclick="logout()">خروج</button>
-    <h1>سامانه عملیات جمع‌آوری باکسیت</h1>
-    <p id="roleText"></p>
+
+<button class="logout" onclick="logout()">خروج</button>
+
+<h1>سامانه عملیات جمع‌آوری باکسیت</h1>
+
+<p id="roleText"></p>
+
 </div>
 
+
 <div class="container">
+
 
 <!-- ================= پنل مدیریت ================= -->
 
 <div id="managerPanel">
 
 <div class="card">
+
 <h2>👨‍💼 پنل مدیریت</h2>
 
 <div class="stats">
@@ -250,6 +258,7 @@ th{
 </div>
 
 </div>
+
 </div>
 
 
@@ -262,6 +271,7 @@ th{
 <table>
 
 <thead>
+
 <tr>
 <th>آموزشگاه</th>
 <th>جمع‌آور</th>
@@ -272,6 +282,7 @@ th{
 <th>وضعیت</th>
 <th>جزئیات</th>
 </tr>
+
 </thead>
 
 <tbody id="reportTable"></tbody>
@@ -307,7 +318,7 @@ th{
 <h2>⚙️ اطلاعات دمو</h2>
 
 <p>
-این نسخه صرفاً برای نمایش فرآیند پیشنهادی به مدیریت طراحی شده است.
+این نسخه برای نمایش فرآیند پیشنهادی به مدیریت طراحی شده است.
 </p>
 
 <button class="btn danger" onclick="resetData()">
@@ -373,17 +384,21 @@ th{
 
 </div>
 
+
 </div>
 
 
 <script>
 
-/* ================= اطلاعات کاربر ================= */
+
+/* ================= کاربر ================= */
 
 var user = localStorage.getItem("boxitUser");
 
 if(!user){
-    window.location.href="index.html";
+
+window.location.href="index.html";
+
 }
 
 
@@ -402,7 +417,7 @@ ready:true,
 arrival:"",
 collected:false,
 eta:35,
-collector:"علی رضایی",
+collector:"محرمعلی جربان",
 receiptRequested:20,
 receiptSent:20,
 receiptDelivered:false
@@ -417,7 +432,7 @@ ready:true,
 arrival:"11:15",
 collected:true,
 eta:15,
-collector:"محمد کریمی",
+collector:"محمد آذری",
 receiptRequested:0,
 receiptSent:0,
 receiptDelivered:false
@@ -432,7 +447,7 @@ ready:true,
 arrival:"",
 collected:false,
 eta:45,
-collector:"علی رضایی",
+collector:"مهرداد مهدیان",
 receiptRequested:30,
 receiptSent:0,
 receiptDelivered:false
@@ -447,7 +462,7 @@ ready:true,
 arrival:"12:05",
 collected:false,
 eta:20,
-collector:"محمد کریمی",
+collector:"محرمعلی جربان",
 receiptRequested:15,
 receiptSent:15,
 receiptDelivered:false
@@ -462,7 +477,7 @@ ready:false,
 arrival:"",
 collected:false,
 eta:60,
-collector:"علی رضایی",
+collector:"محمد آذری",
 receiptRequested:0,
 receiptSent:0,
 receiptDelivered:false
@@ -473,79 +488,93 @@ receiptDelivered:false
 };
 
 
-var saved = localStorage.getItem("boxit_demo");
+var saved=localStorage.getItem("boxit_demo");
 
 var data;
 
 if(saved){
-    try{
-        data = JSON.parse(saved);
-    }catch(e){
-        data = defaultData;
-    }
-}else{
-    data = defaultData;
+
+try{
+
+data=JSON.parse(saved);
+
+}
+catch(e){
+
+data=defaultData;
+
 }
 
+}else{
+
+data=defaultData;
+
+}
+
+
+/* ================= ذخیره ================= */
 
 function save(){
 
-    localStorage.setItem(
-        "boxit_demo",
-        JSON.stringify(data)
-    );
+localStorage.setItem(
+"boxit_demo",
+JSON.stringify(data)
+);
 
 }
 
 
-/* ================= نقش ================= */
+/* ================= نقش کاربر ================= */
 
 function setup(){
 
-    document.getElementById("managerPanel").style.display="none";
-    document.getElementById("collectorPanel").style.display="none";
-    document.getElementById("schoolPanel").style.display="none";
+document.getElementById("managerPanel").style.display="none";
 
-    if(user==="admin"){
+document.getElementById("collectorPanel").style.display="none";
 
-        document.getElementById("managerPanel").style.display="block";
+document.getElementById("schoolPanel").style.display="none";
 
-        document.getElementById("roleText").innerText=
-        "کاربر: مدیر";
 
-        manager();
+if(user==="admin"){
 
-    }
+document.getElementById("managerPanel").style.display="block";
 
-    else if(user==="collector"){
+document.getElementById("roleText").innerText=
+"کاربر: مدیر";
 
-        document.getElementById("collectorPanel").style.display="block";
+manager();
 
-        document.getElementById("roleText").innerText=
-        "کاربر: جمع‌آور";
+}
 
-        collector();
+else if(user==="collector"){
 
-    }
+document.getElementById("collectorPanel").style.display="block";
 
-    else if(user==="school"){
+document.getElementById("roleText").innerText=
+"کاربر: جمع‌آور";
 
-        document.getElementById("schoolPanel").style.display="block";
+collector();
 
-        document.getElementById("roleText").innerText=
-        "کاربر: آموزشگاه";
+}
 
-        school();
+else if(user==="school"){
 
-    }
+document.getElementById("schoolPanel").style.display="block";
 
-    else{
+document.getElementById("roleText").innerText=
+"کاربر: آموزشگاه";
 
-        localStorage.removeItem("boxitUser");
+school();
 
-        window.location.href="index.html";
+}
 
-    }
+else{
+
+localStorage.removeItem("boxitUser");
+
+window.location.href="index.html";
+
+}
 
 }
 
@@ -554,163 +583,209 @@ function setup(){
 
 function manager(){
 
-    var ready=0;
-    var collected=0;
-    var files=0;
+var ready=0;
 
-    for(var i=0;i<data.schools.length;i++){
+var collected=0;
 
-        var s=data.schools[i];
-
-        if(s.ready) ready++;
-
-        if(s.collected) collected++;
-
-        files += Number(s.declared)||0;
-
-    }
-
-    document.getElementById("readyCount").innerText=ready;
-
-    document.getElementById("collectedCount").innerText=collected;
-
-    document.getElementById("fileCount").innerText=files;
+var files=0;
 
 
-    var table=document.getElementById("reportTable");
+for(var i=0;i<data.schools.length;i++){
 
-    table.innerHTML="";
+var s=data.schools[i];
 
+if(s.ready) ready++;
 
-    for(var i=0;i<data.schools.length;i++){
+if(s.collected) collected++;
 
-        var s=data.schools[i];
-
-        var status="";
-        var cls="orange";
-
-        if(s.collected){
-
-            status="جمع‌آوری شده";
-            cls="green";
-
-        }
-        else if(s.arrival){
-
-            status="مراجعه شده";
-            cls="green";
-
-        }
-        else if(s.ready){
-
-            status="آماده جمع‌آوری";
-            cls="orange";
-
-        }
-        else{
-
-            status="آماده نیست";
-            cls="red";
-
-        }
-
-
-        table.innerHTML +=
-
-        "<tr>"+
-
-        "<td>"+s.name+"</td>"+
-
-        "<td>"+(s.collector || "-")+"</td>"+
-
-        "<td>"+s.declared+"</td>"+
-
-        "<td>"+s.received+"</td>"+
-
-        "<td>"+(s.arrival || "-")+"</td>"+
-
-        "<td>"+(s.receiptSent || 0)+"</td>"+
-
-        "<td><span class='badge "+cls+"'>"+status+"</span></td>"+
-
-        "<td><button class='btn gray' onclick='details("+i+")'>مشاهده</button></td>"+
-
-        "</tr>";
-
-    }
-
-
-    var select=document.getElementById("receiptSchool");
-
-    select.innerHTML="";
-
-    for(var j=0;j<data.schools.length;j++){
-
-        select.innerHTML +=
-
-        "<option value='"+j+"'>"+
-        data.schools[j].name+
-        "</option>";
-
-    }
+files+=Number(s.declared)||0;
 
 }
 
 
-/* ================= جزئیات مدیریت ================= */
+document.getElementById("readyCount").innerText=ready;
+
+document.getElementById("collectedCount").innerText=collected;
+
+document.getElementById("fileCount").innerText=files;
+
+
+var table=document.getElementById("reportTable");
+
+table.innerHTML="";
+
+
+for(var i=0;i<data.schools.length;i++){
+
+var s=data.schools[i];
+
+var status="";
+
+var cls="orange";
+
+
+if(s.collected){
+
+status="جمع‌آوری شده";
+
+cls="green";
+
+}
+
+else if(s.arrival){
+
+status="مراجعه شده";
+
+cls="green";
+
+}
+
+else if(s.ready){
+
+status="آماده جمع‌آوری";
+
+cls="orange";
+
+}
+
+else{
+
+status="آماده نیست";
+
+cls="red";
+
+}
+
+
+/*
+قبل از مراجعه:
+تعداد دریافتی هنوز صحت‌سنجی نشده
+پس خط تیره نمایش داده می‌شود.
+*/
+
+var receivedDisplay;
+
+if(s.arrival){
+
+receivedDisplay=s.received;
+
+}else{
+
+receivedDisplay="—";
+
+}
+
+
+table.innerHTML+=
+
+"<tr>"+
+
+"<td>"+s.name+"</td>"+
+
+"<td>"+(s.collector||"-")+"</td>"+
+
+"<td>"+s.declared+"</td>"+
+
+"<td>"+receivedDisplay+"</td>"+
+
+"<td>"+(s.arrival||"-")+"</td>"+
+
+"<td>"+(s.receiptSent||0)+"</td>"+
+
+"<td><span class='badge "+cls+"'>"+status+"</span></td>"+
+
+"<td><button class='btn gray' onclick='details("+i+")'>مشاهده</button></td>"+
+
+"</tr>";
+
+}
+
+
+var select=document.getElementById("receiptSchool");
+
+select.innerHTML="";
+
+
+for(var j=0;j<data.schools.length;j++){
+
+select.innerHTML+=
+
+"<option value='"+j+"'>"+
+data.schools[j].name+
+"</option>";
+
+}
+
+}
+
+
+/* ================= جزئیات ================= */
 
 function details(index){
 
-    var s=data.schools[index];
+var s=data.schools[index];
 
-    alert(
+var received;
 
-    "آموزشگاه: "+s.name+
+if(s.arrival){
 
-    "\nجمع‌آور: "+(s.collector || "-")+
+received=s.received;
 
-    "\nآدرس: "+s.address+
+}else{
 
-    "\nتعداد اعلامی: "+s.declared+
-
-    "\nتعداد دریافتی: "+s.received+
-
-    "\nاختلاف: "+(s.declared-s.received)+
-
-    "\nزمان مراجعه: "+(s.arrival || "ثبت نشده")+
-
-    "\nزمان تقریبی: "+(s.arrival ? "-" : s.eta+" دقیقه دیگر")+
-
-    "\nقبض درخواستی: "+(s.receiptRequested || 0)+
-
-    "\nقبض ارسال شده: "+(s.receiptSent || 0)+
-
-    "\nدریافت قبض: "+(s.receiptDelivered ? "تأیید شده" : "تأیید نشده")
-
-    );
+received="—";
 
 }
 
 
-/* ================= ثبت قبض توسط مدیریت ================= */
+alert(
+
+"آموزشگاه: "+s.name+
+
+"\nجمع‌آور: "+(s.collector||"-")+
+
+"\nآدرس: "+s.address+
+
+"\nتعداد اعلامی: "+s.declared+
+
+"\nتعداد دریافتی: "+received+
+
+"\nزمان مراجعه: "+(s.arrival||"ثبت نشده")+
+
+"\nزمان تقریبی: "+(s.arrival?"-":s.eta+" دقیقه دیگر")+
+
+"\nقبض درخواستی: "+(s.receiptRequested||0)+
+
+"\nقبض ارسال شده: "+(s.receiptSent||0)+
+
+"\nدریافت قبض: "+
+
+(s.receiptDelivered?"تأیید شده":"تأیید نشده")
+
+);
+
+}
+
+
+/* ================= ثبت قبض ================= */
 
 function saveReceipt(){
 
-    var index=Number(
-        document.getElementById("receiptSchool").value
-    );
+var index=Number(
+document.getElementById("receiptSchool").value
+);
 
-    var number=Number(
-        document.getElementById("receiptNumber").value
-    ) || 0;
+var number=Number(
+document.getElementById("receiptNumber").value
+)||0;
 
-    data.schools[index].receiptSent=number;
+data.schools[index].receiptSent=number;
 
-    save();
+save();
 
-    alert("تعداد قبض ثبت شد.");
+alert("تعداد قبض ثبت شد.");
 
-    manager();
+manager();
 
 }
 
@@ -719,126 +794,131 @@ function saveReceipt(){
 
 function collector(){
 
-    var missions=0;
-    var done=0;
+var missions=0;
 
-    var list=document.getElementById("collectorList");
+var done=0;
 
-    list.innerHTML="";
+var list=document.getElementById("collectorList");
 
-
-    for(var i=0;i<data.schools.length;i++){
-
-        var s=data.schools[i];
-
-        if(!s.ready) continue;
-
-        missions++;
-
-        if(s.collected) done++;
+list.innerHTML="";
 
 
-        var arrival="";
+for(var i=0;i<data.schools.length;i++){
 
-        if(s.arrival){
+var s=data.schools[i];
 
-            arrival=
+if(!s.ready) continue;
 
-            "<div class='ok'>"+
-            "زمان دقیق مراجعه: <strong>"+
-            s.arrival+
-            "</strong></div>";
+missions++;
 
-        }else{
-
-            arrival=
-
-            "<div class='info'>"+
-            "زمان تقریبی رسیدن: <strong>"+
-            s.eta+
-            " دقیقه دیگر</strong></div>";
-
-        }
+if(s.collected) done++;
 
 
-        var receipt="";
-
-        if(s.receiptSent>0){
-
-            receipt=
-
-            "<div class='info'>"+
-            "🧾 تعداد قبض: <strong>"+
-            s.receiptSent+
-            "</strong><br><br>"+
-
-            (s.receiptDelivered
-
-            ?
-
-            "✅ قبض توسط آموزشگاه دریافت شده است."
-
-            :
-
-            "<button class='btn success' onclick='deliverReceipt("+i+")'>"+
-            "قبض تحویل شد"+
-            "</button>")+
-
-            "</div>";
-
-        }
+var arrivalText;
 
 
-        list.innerHTML +=
+if(s.arrival){
 
-        "<div class='school'>"+
+arrivalText=
 
-        "<h3>🏫 "+s.name+"</h3>"+
+"<div class='ok'>"+
+"زمان دقیق مراجعه: <strong>"+
+s.arrival+
+"</strong>"+
+"</div>";
 
-        "<p>📍 "+s.address+"</p>"+
+}else{
 
-        "<p>تعداد اعلامی: <strong>"+
-        s.declared+
-        "</strong></p>"+
+arrivalText=
 
-        "<p>تعداد دریافتی: <strong>"+
-        s.received+
-        "</strong></p>"+
+"<div class='info'>"+
+"زمان تقریبی رسیدن: <strong>"+
+s.eta+
+" دقیقه دیگر</strong>"+
+"</div>";
 
-        arrival+
-
-        "<label>اصلاح تعداد واقعی دریافتی</label>"+
-
-        "<input type='number' id='received_"+i+"' value='"+s.received+"' min='0'>"+
-
-        "<button class='btn gray' onclick='changeReceived("+i+")'>"+
-        "ثبت تعداد"+
-        "</button>"+
-
-        (s.arrival
-
-        ?
-
-        "<button class='btn success' onclick='finish("+i+")'>"+
-        "📦 ثبت نهایی جمع‌آوری"+
-        "</button>"
-
-        :
-
-        "<button class='btn primary' onclick='arrival("+i+")'>"+
-        "📍 ثبت ورود به آموزشگاه"+
-        "</button>")+
-
-        receipt+
-
-        "</div>";
-
-    }
+}
 
 
-    document.getElementById("missionCount").innerText=missions;
+var receiptText="";
 
-    document.getElementById("doneCount").innerText=done;
+
+if(s.receiptSent>0){
+
+receiptText=
+
+"<div class='info'>"+
+"🧾 تعداد قبض: <strong>"+
+s.receiptSent+
+"</strong><br><br>"+
+
+(s.receiptDelivered
+
+?
+
+"✅ قبض توسط آموزشگاه دریافت شده است."
+
+:
+
+"<button class='btn success' onclick='deliverReceipt("+i+")'>"+
+"قبض تحویل شد"+
+"</button>")+
+
+"</div>";
+
+}
+
+
+list.innerHTML+=
+
+"<div class='school'>"+
+
+"<h3>🏫 "+s.name+"</h3>"+
+
+"<p>📍 "+s.address+"</p>"+
+
+"<p>تعداد اعلامی: <strong>"+
+s.declared+
+"</strong></p>"+
+
+"<p>تعداد دریافتی: <strong>"+
+(s.arrival?s.received:"—")+
+"</strong></p>"+
+
+arrivalText+
+
+"<label>تعداد واقعی دریافتی</label>"+
+
+"<input type='number' id='received_"+i+"' value='"+s.received+"' min='0'>"+
+
+"<button class='btn gray' onclick='changeReceived("+i+")'>"+
+"ثبت تعداد"+
+"</button>"+
+
+(s.arrival
+
+?
+
+"<button class='btn success' onclick='finish("+i+")'>"+
+"📦 ثبت نهایی جمع‌آوری"+
+"</button>"
+
+:
+
+"<button class='btn primary' onclick='arrival("+i+")'>"+
+"📍 ثبت ورود به آموزشگاه"+
+"</button>")+
+
+receiptText+
+
+"</div>";
+
+}
+
+
+document.getElementById("missionCount").innerText=missions;
+
+document.getElementById("doneCount").innerText=done;
 
 }
 
@@ -847,19 +927,19 @@ function collector(){
 
 function arrival(index){
 
-    var d=new Date();
+var d=new Date();
 
-    var h=String(d.getHours()).padStart(2,"0");
+var h=String(d.getHours()).padStart(2,"0");
 
-    var m=String(d.getMinutes()).padStart(2,"0");
+var m=String(d.getMinutes()).padStart(2,"0");
 
-    data.schools[index].arrival=h+":"+m;
+data.schools[index].arrival=h+":"+m;
 
-    save();
+save();
 
-    alert("زمان ورود ثبت شد: "+h+":"+m);
+alert("زمان ورود ثبت شد: "+h+":"+m);
 
-    collector();
+collector();
 
 }
 
@@ -868,17 +948,17 @@ function arrival(index){
 
 function changeReceived(index){
 
-    var value=Number(
-        document.getElementById("received_"+index).value
-    ) || 0;
+var value=Number(
+document.getElementById("received_"+index).value
+)||0;
 
-    data.schools[index].received=value;
+data.schools[index].received=value;
 
-    save();
+save();
 
-    alert("تعداد واقعی ثبت شد.");
+alert("تعداد واقعی پرونده‌ها ثبت شد.");
 
-    collector();
+collector();
 
 }
 
@@ -887,13 +967,21 @@ function changeReceived(index){
 
 function finish(index){
 
-    data.schools[index].collected=true;
+if(!data.schools[index].arrival){
 
-    save();
+alert("ابتدا ورود به آموزشگاه را ثبت کنید.");
 
-    alert("جمع‌آوری نهایی ثبت شد.");
+return;
 
-    collector();
+}
+
+data.schools[index].collected=true;
+
+save();
+
+alert("جمع‌آوری نهایی ثبت شد.");
+
+collector();
 
 }
 
@@ -902,13 +990,13 @@ function finish(index){
 
 function deliverReceipt(index){
 
-    data.schools[index].receiptDelivered=true;
+data.schools[index].receiptDelivered=true;
 
-    save();
+save();
 
-    alert("تحویل قبض ثبت شد.");
+alert("تحویل قبض ثبت شد.");
 
-    collector();
+collector();
 
 }
 
@@ -917,142 +1005,167 @@ function deliverReceipt(index){
 
 function school(){
 
-    var select=document.getElementById("schoolSelect");
+var select=document.getElementById("schoolSelect");
 
-    select.innerHTML="";
+select.innerHTML="";
 
-    for(var i=0;i<data.schools.length;i++){
 
-        select.innerHTML +=
+for(var i=0;i<data.schools.length;i++){
 
-        "<option value='"+i+"'>"+
-        data.schools[i].name+
-        "</option>";
+select.innerHTML+=
 
-    }
-
-    showSchool();
+"<option value='"+i+"'>"+
+data.schools[i].name+
+"</option>";
 
 }
 
 
+showSchool();
+
+}
+
+
+/* ================= نمایش آموزشگاه ================= */
+
 function showSchool(){
 
-    var index=Number(
-        document.getElementById("schoolSelect").value
-    ) || 0;
+var index=Number(
+document.getElementById("schoolSelect").value
+)||0;
 
-    var s=data.schools[index];
-
-    var arrivalText="";
-
-    if(s.arrival){
-
-        arrivalText=
-
-        "<div class='ok'>"+
-        "🚚 جمع‌آور مراجعه کرده است.<br>"+
-        "زمان مراجعه: <strong>"+
-        s.arrival+
-        "</strong>"+
-        "</div>";
-
-    }else{
-
-        arrivalText=
-
-        "<div class='info'>"+
-        "🚚 زمان تقریبی رسیدن جمع‌آور: <strong>"+
-        s.eta+
-        " دقیقه دیگر</strong>"+
-        "</div>";
-
-    }
+var s=data.schools[index];
 
 
-    var receiptText="";
-
-    if(s.receiptRequested>0){
-
-        receiptText +=
-
-        "<div class='info'>"+
-        "تعداد قبض درخواستی: <strong>"+
-        s.receiptRequested+
-        "</strong>"+
-        "</div>";
-
-    }
+var arrivalText;
 
 
-    if(s.receiptSent>0){
+if(s.arrival){
 
-        receiptText +=
+arrivalText=
 
-        "<div class='ok'>"+
+"<div class='ok'>"+
+"🚚 جمع‌آور به آموزشگاه مراجعه کرده است.<br>"+
+"زمان مراجعه: <strong>"+
+s.arrival+
+"</strong>"+
+"</div>";
 
-        "با توجه به درخواست شما تعداد "+
-        "<strong>"+
-        s.receiptSent+
-        "</strong>"+
-        " قبض پستی به شما تحویل داده می‌شود."+
+}else{
 
-        "<br><br>"+
+arrivalText=
 
-        (s.receiptDelivered
+"<div class='info'>"+
+"🚚 زمان تقریبی رسیدن جمع‌آور: <strong>"+
+s.eta+
+" دقیقه دیگر</strong>"+
+"</div>";
 
-        ?
-
-        "✅ دریافت قبض‌ها تأیید شده است."
-
-        :
-
-        "<button class='btn success' onclick='confirmReceipt("+index+")'>"+
-        "قبض‌ها را دریافت کردم"+
-        "</button>")+
-
-        "</div>";
-
-    }
+}
 
 
-    document.getElementById("schoolContent").innerHTML=
+/*
+قبل از مراجعه فقط تعداد اعلامی نمایش داده می‌شود.
+بعد از مراجعه تعداد واقعی هم نمایش داده می‌شود.
+*/
 
-    "<div class='school'>"+
 
-    "<h3>"+s.name+"</h3>"+
+var fileText=
 
-    "<p>📍 "+s.address+"</p>"+
+"<p>📁 تعداد پرونده اعلام شده: <strong>"+
+s.declared+
+"</strong></p>";
 
-    "<p>📁 تعداد پرونده اعلام شده: <strong>"+
-    s.declared+
-    "</strong></p>"+
 
-    "<p>📦 تعداد پرونده تحویل شده: <strong>"+
-    s.received+
-    "</strong></p>"+
+if(s.arrival){
 
-    arrivalText+
+fileText+=
 
-    "<hr>"+
+"<p>📦 تعداد پرونده تحویل شده: <strong>"+
+s.received+
+"</strong></p>";
 
-    "<h3>🧾 ثبت درخواست قبض و پرداخت</h3>"+
+}
 
-    "<div class='info'>"+
-    "تعداد قبض مورد نیاز را وارد کنید. در نسخه واقعی، پس از ثبت درخواست به درگاه بانکی منتقل خواهید شد."+
-    "</div>"+
 
-    "<label>تعداد قبض مورد نیاز</label>"+
+var receiptText="";
 
-    "<input type='number' id='requestNumber' min='1' value='"+(s.receiptRequested || "")+"'>"+
 
-    "<button class='btn primary' onclick='requestPayment("+index+")'>"+
-    "🧾 ثبت درخواست قبض و پرداخت"+
-    "</button>"+
+if(s.receiptRequested>0){
 
-    receiptText+
+receiptText+=
 
-    "</div>";
+"<div class='info'>"+
+"تعداد قبض درخواستی: <strong>"+
+s.receiptRequested+
+"</strong>"+
+"</div>";
+
+}
+
+
+if(s.receiptSent>0){
+
+receiptText+=
+
+"<div class='ok'>"+
+
+"با توجه به درخواست شما تعداد "+
+"<strong>"+
+s.receiptSent+
+"</strong>"+
+" قبض پستی به شما تحویل داده می‌شود."+
+
+"<br><br>"+
+
+(s.receiptDelivered
+
+?
+
+"✅ دریافت قبض‌ها تأیید شده است."
+
+:
+
+"<button class='btn success' onclick='confirmReceipt("+index+")'>"+
+"قبض‌ها را دریافت کردم"+
+"</button>")+
+
+"</div>";
+
+}
+
+
+document.getElementById("schoolContent").innerHTML=
+
+"<div class='school'>"+
+
+"<h3>"+s.name+"</h3>"+
+
+"<p>📍 "+s.address+"</p>"+
+
+fileText+
+
+arrivalText+
+
+"<hr>"+
+
+"<h3>🧾 ثبت درخواست قبض و پرداخت</h3>"+
+
+"<div class='info'>"+
+"تعداد قبض مورد نیاز را وارد کنید. در نسخه واقعی، پس از ثبت درخواست به درگاه بانکی منتقل خواهید شد."+
+"</div>"+
+
+"<label>تعداد قبض مورد نیاز</label>"+
+
+"<input type='number' id='requestNumber' min='1' value='"+(s.receiptRequested||"")+"'>"+
+
+"<button class='btn primary' onclick='requestPayment("+index+")'>"+
+"🧾 ثبت درخواست قبض و پرداخت"+
+"</button>"+
+
+receiptText+
+
+"</div>";
 
 }
 
@@ -1061,30 +1174,34 @@ function showSchool(){
 
 function requestPayment(index){
 
-    var number=Number(
-        document.getElementById("requestNumber").value
-    ) || 0;
+var number=Number(
+document.getElementById("requestNumber").value
+)||0;
 
-    if(number<=0){
+if(number<=0){
 
-        alert("لطفاً تعداد قبض را وارد کنید.");
+alert("لطفاً تعداد قبض را وارد کنید.");
 
-        return;
+return;
 
-    }
+}
 
-    data.schools[index].receiptRequested=number;
 
-    save();
+data.schools[index].receiptRequested=number;
 
-    alert(
-        "درخواست "+number+
-        " قبض ثبت شد.\n\n"+
-        "در نسخه واقعی، اکنون کاربر به درگاه بانکی منتقل می‌شود.\n\n"+
-        "پرداخت در این نسخه آزمایشی است."
-    );
+save();
 
-    showSchool();
+
+alert(
+
+"درخواست "+number+
+" قبض ثبت شد.\n\n"+
+"در نسخه واقعی، اکنون به درگاه بانکی منتقل می‌شوید.\n\n"+
+"پرداخت در این نسخه آزمایشی است."
+
+);
+
+showSchool();
 
 }
 
@@ -1093,13 +1210,13 @@ function requestPayment(index){
 
 function confirmReceipt(index){
 
-    data.schools[index].receiptDelivered=true;
+data.schools[index].receiptDelivered=true;
 
-    save();
+save();
 
-    alert("دریافت قبض‌ها تأیید شد.");
+alert("دریافت قبض‌ها تأیید شد.");
 
-    showSchool();
+showSchool();
 
 }
 
@@ -1108,9 +1225,9 @@ function confirmReceipt(index){
 
 function logout(){
 
-    localStorage.removeItem("boxitUser");
+localStorage.removeItem("boxitUser");
 
-    window.location.href="index.html";
+window.location.href="index.html";
 
 }
 
@@ -1119,16 +1236,16 @@ function logout(){
 
 function resetData(){
 
-    if(!confirm("اطلاعات دمو بازنشانی شود؟")) return;
+if(!confirm("اطلاعات دمو بازنشانی شود؟")) return;
 
-    localStorage.removeItem("boxit_demo");
+localStorage.removeItem("boxit_demo");
 
-    location.reload();
+location.reload();
 
 }
 
 
-/* ================= اجرا ================= */
+/* ================= شروع ================= */
 
 setup();
 
