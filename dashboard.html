@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>داشبورد - Boxit Collection</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    header {
+      background: #222;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .welcome {
+      background: white;
+      padding: 18px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 9px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .logout {
+      background: #b00020;
+    }
+
+    #result {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f1f1f1;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>BOXIT</h2>
+  <div>سامانه جمع‌آوری آموزشگاه‌ها</div>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <h3>خوش آمدید 👋</h3>
+    <p>آموزشگاه می‌تواند وضعیت پرونده‌های خود را ثبت کند.</p>
+  </div>
+
+  <div class="card">
+    <h3>📁 اعلام آماده بودن پرونده</h3>
+
+    <input
+      type="number"
+      id="fileCount"
+      placeholder="تعداد پرونده آماده"
+      min="0"
+    >
+
+    <button onclick="registerFiles()">
+      اعلام آماده بودن
+    </button>
+
+    <div id="result"></div>
+  </div>
+
+  <div class="card">
+    <h3>🚚 وضعیت جمع‌آوری</h3>
+    <p id="collectionStatus">
+      هنوز جمع‌آوری ثبت نشده است.
+    </p>
+  </div>
+
+  <button class="logout" onclick="logout()">
+    خروج از حساب
+  </button>
+
+</div>
+
+<script>
+
+  // بررسی ورود
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  function registerFiles() {
+
+    const count = document.getElementById("fileCount").value;
+    const result = document.getElementById("result");
+
+    if (count === "" || Number(count) < 0) {
+      result.style.display = "block";
+      result.innerText = "لطفاً تعداد پرونده را وارد کنید.";
+      return;
+    }
+
+    const time = new Date().toLocaleString("fa-IR");
+
+    localStorage.setItem("fileCount", count);
+    localStorage.setItem("readyTime", time);
+
+    result.style.display = "block";
+    result.innerText =
+      "تعداد " + count + " پرونده با موفقیت اعلام شد.\nزمان ثبت: " + time;
+
+    document.getElementById("collectionStatus").innerText =
+      "پرونده‌ها آماده جمع‌آوری هستند.\nزمان اعلام: " + time;
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "index.html";
+  }
+
+</script>
+
+</body>
+</html>
